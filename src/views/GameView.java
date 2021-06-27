@@ -14,7 +14,11 @@ import javax.imageio.ImageIO;
 public class GameView extends JFrame {
     public static final int HEIGHT = 1080;
     public static final int WIDTH = 1920;
-    private final Canvas canvas;
+    public static final T0 = 0;
+    public static final T1 = 1;
+    public static final T2 = 2;
+    public static final T3 = 3;
+    private final Canvas canvas = new Canvas();
     private final Game game;
 
     public GameView(Game game) throws HeadlessException {
@@ -41,7 +45,22 @@ public class GameView extends JFrame {
             @Override
             public void keyPressed(KeyEvent keyEvent) {
                 switch (keyEvent.getKeyCode()) {
-                }
+                	case KeyEvent.VK_D:
+				game.clickTrack(T0);
+				break;
+                	case KeyEvent.VK_F:
+				game.clickTrack(T1);
+				break;
+                	case KeyEvent.VK_J:
+				game.clickTrack(T2);
+				break;
+                	case KeyEvent.VK_K:
+				game.clickTrack(T3);
+				break;
+			case KeyEvent.VK_P:
+				//Pause
+				break;
+		}
             }
 
             @Override

@@ -14,16 +14,16 @@ import javax.imageio.ImageIO;
 public class GameView extends JFrame {
     public static final int HEIGHT = 1080;
     public static final int WIDTH = 1920;
-    public static final T0 = 0;
-    public static final T1 = 1;
-    public static final T2 = 2;
-    public static final T3 = 3;
-    private final Canvas canvas = new Canvas();
+    public static final int T0 = 0;
+    public static final int T1 = 1;
+    public static final int T2 = 2;
+    public static final int T3 = 3;
+    private final Canvas canvas;
     private final Game game;
 
     public GameView(Game game) throws HeadlessException {
         try {
-            this.canvas = new Canvas("./assets/anm7064.jpeg");
+            this.canvas = new Canvas("./assets/sea.png");
         }
         catch (IOException e)   {
             throw new RuntimeException(e);
@@ -88,8 +88,7 @@ public class GameView extends JFrame {
         protected void paintComponent(Graphics g /*paintbrush*/) {
             super.paintComponent(g);
             g.drawImage(backgroundImage, 0, 0, this);
-            //g.fillRect(0, 0, GameView.WIDTH, GameView.HEIGHT);
-
+            
             screen.render(g); // ask the world to paint itself and paint the sprites on the canvas
         }
     }

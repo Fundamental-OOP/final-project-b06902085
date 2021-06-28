@@ -26,11 +26,12 @@ public class Track extends Sprite {
     @Override
     public void update() {}
 
-
     @Override
     public void render(Graphics g) {
-        g.setColor(Color.RED);
-        g.fillRect(this.location.x, this.location.y, this.getBodySize().width, this.getBodySize().height);
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setColor(new Color(110, 177, 235));
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) 0.82));
+        g2.fillRect(this.location.x, this.location.y, this.getBodySize().width, this.getBodySize().height);
     }
 
 

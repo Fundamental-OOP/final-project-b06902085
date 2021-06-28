@@ -16,6 +16,7 @@ public class GameView extends JFrame {
     public static final int HEIGHT = 1080;
     private final Canvas canvas;
     private final Game game;
+    public static String displayImageName = "START";
 
     public GameView(Game game) throws HeadlessException {
         try {
@@ -40,13 +41,7 @@ public class GameView extends JFrame {
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent keyEvent) {
-                switch (keyEvent.getKeyCode()) {
-                }
-            }
-
-            @Override
-            public void keyReleased(KeyEvent keyEvent) {
-
+                displayImageName = "CHOOSE_SONG";
             }
         });
     }
@@ -54,6 +49,7 @@ public class GameView extends JFrame {
     public static class Canvas extends JPanel implements GameLoop.View{
         private Screen screen;
         private Image background;
+        private Image test;
         @Override
         public void render(Screen screen) {
             this.screen = screen;
@@ -62,13 +58,18 @@ public class GameView extends JFrame {
 
         public Canvas() throws IOException {
             background = ImageIO.read(new File("./assets/anm7064.jpeg"));
-            //background.getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+            test = ImageIO.read(new File("./assets/thankyou.jpeg"));
         }
 
         @Override
         protected void paintComponent(Graphics g /*paintbrush*/) {
             super.paintComponent(g);
-            g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
+            if (displayImageName.equals("START"))   {
+                g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
+            }
+            else    {
+                g.drawImage(test, 0, 0, getWidth(), getHeight(), this);
+            }
             screen.render(g); // ask the world to paint itself and paint the sprites on the canvas
         }
     }

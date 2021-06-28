@@ -10,11 +10,11 @@ import java.util.Map;
 public class AudioPlayer {
     private static final Map<Object, File> sounds = new HashMap<>();
 
-    public static void addAudioByFilePath(Object audioName, File file) {
+    public static void addAudioByFilePath(String audioName, File file) {
         sounds.put(audioName, file);
     }
 
-    public static void addAudioByFilePath(Object audioName, String path) {
+    public static void addAudioByFilePath(String audioName, String path) {
         sounds.put(audioName, Paths.get(path).toFile());
     }
 

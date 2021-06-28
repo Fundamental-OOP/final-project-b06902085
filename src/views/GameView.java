@@ -16,7 +16,7 @@ public class GameView extends JFrame {
     public static final int HEIGHT = 1080;
     private final Canvas canvas;
     private final Game game;
-    public static String displayImageName = "START";
+    public static String state = "TITLE";
 
     public GameView(Game game) throws HeadlessException {
         try {
@@ -41,7 +41,20 @@ public class GameView extends JFrame {
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent keyEvent) {
-                displayImageName = "CHOOSE_SONG";
+                if (state.equals("TITLE"))  {
+                    state = "MENU";
+                    game.enterMenu();
+                }
+                else    {
+                    switch (keyEvent.getKeyCode()) {
+                        case KeyEvent.VK_RIGHT:
+                            game.nextSong();
+                            break;
+                        case KeyEvent.VK_LEFT:
+                            game.previousSong();
+                            break;
+                    }
+                }
             }
         });
     }
@@ -57,19 +70,22 @@ public class GameView extends JFrame {
         }
 
         public Canvas() throws IOException {
-            background = ImageIO.read(new File("./assets/anm7064.jpeg"));
-            test = ImageIO.read(new File("./assets/thankyou.jpeg"));
+            background = ImageIO.read(new File("./assets/img/anm7064.jpeg"));
+            test = ImageIO.read(new File("./assets/img/reflect_bg.png"));
         }
 
         @Override
         protected void paintComponent(Graphics g /*paintbrush*/) {
             super.paintComponent(g);
-            if (displayImageName.equals("START"))   {
+
+            // SPAGHETTI ALERT !! 
+            if (state.equals("TITLE"))   {
                 g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
             }
             else    {
                 g.drawImage(test, 0, 0, getWidth(), getHeight(), this);
             }
+
             screen.render(g); // ask the world to paint itself and paint the sprites on the canvas
         }
     }

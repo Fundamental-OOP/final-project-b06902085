@@ -1,6 +1,7 @@
 package controller;
 
 import model.Screen;
+import media.AudioPlayer;
 
 public class Game extends GameLoop  {
     private final Screen screen;
@@ -11,5 +12,17 @@ public class Game extends GameLoop  {
     @Override
     protected Screen getScreen() {
         return screen;
+    }
+    public void enterMenu() {
+        System.out.println("enter menu");
+        AudioPlayer.playSounds("Reflect");
+    }
+
+    // TODOs
+    public void previousSong()  {
+        System.out.println("previous song");
+    }
+    public void nextSong()  {
+        System.out.println("next song");
     }
 }

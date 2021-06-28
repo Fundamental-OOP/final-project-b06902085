@@ -11,15 +11,22 @@ import java.awt.event.KeyEvent;
 import java.io.*; 
 import javax.imageio.ImageIO;
 
+import java.util.Map;
+import java.util.HashMap;
+
 public class GameView extends JFrame {
     public static final int WIDTH = 1920;
     public static final int HEIGHT = 1080;
     private final Canvas canvas;
     private final Game game;
     public static String state = "TITLE";
+    private static final Map<String, Image> images = new HashMap<>();
 
     public GameView(Game game) throws HeadlessException {
         try {
+            addImageByFilePath("TITLE", ImageIO.read(new File("./assets/img/anm7064.jpeg")));
+            addImageByFilePath("REFLECT", ImageIO.read(new File("./assets/img/reflect_bg.png")));
+            addImageByFilePath("COUNTRY_ROADS", ImageIO.read(new File("./assets/img/ukelele.jpeg")));
             this.canvas = new Canvas();
         }
         catch (IOException e)   {
@@ -27,6 +34,10 @@ public class GameView extends JFrame {
         }
         this.game = game;
         this.game.setView(this.canvas);
+    }
+
+    public static void addImageByFilePath(String imageName, Image image) {
+        images.put(imageName, image);
     }
 
     public void launch() {
@@ -42,16 +53,15 @@ public class GameView extends JFrame {
             @Override
             public void keyPressed(KeyEvent keyEvent) {
                 if (state.equals("TITLE"))  {
-                    state = "MENU";
-                    game.enterMenu();
+                    state = game.enterMenu();
                 }
                 else    {
                     switch (keyEvent.getKeyCode()) {
                         case KeyEvent.VK_RIGHT:
-                            game.nextSong();
+                            state = game.nextSong();
                             break;
                         case KeyEvent.VK_LEFT:
-                            game.previousSong();
+                            state = game.previousSong();
                             break;
                     }
                 }
@@ -61,30 +71,16 @@ public class GameView extends JFrame {
 
     public static class Canvas extends JPanel implements GameLoop.View{
         private Screen screen;
-        private Image background;
-        private Image test;
         @Override
         public void render(Screen screen) {
             this.screen = screen;
             repaint(); // ask the JPanel to repaint, it will invoke paintComponent(g) after a while.
         }
 
-        public Canvas() throws IOException {
-            background = ImageIO.read(new File("./assets/img/anm7064.jpeg"));
-            test = ImageIO.read(new File("./assets/img/reflect_bg.png"));
-        }
-
         @Override
         protected void paintComponent(Graphics g /*paintbrush*/) {
             super.paintComponent(g);
-
-            // SPAGHETTI ALERT !! 
-            if (state.equals("TITLE"))   {
-                g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
-            }
-            else    {
-                g.drawImage(test, 0, 0, getWidth(), getHeight(), this);
-            }
+            g.drawImage(images.get(state), 0, 0, getWidth(), getHeight(), this);
 
             screen.render(g); // ask the world to paint itself and paint the sprites on the canvas
         }

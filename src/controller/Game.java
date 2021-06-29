@@ -16,9 +16,25 @@ public class Game extends GameLoop  {
     }
 
     public void clickTrack(int T_NUM) {
+        getTrack(T_NUM).click();
     }
 
     public void releaseTrack(int T_NUM) {
+        getTrack(T_NUM).release();        
+    }
+
+    private Track getTrack(int T_NUM){
+        switch(T_NUM) {
+            case 0:
+                return t1;
+            case 1:
+                return t2;
+            case 2:
+                return t3;
+            case 3:
+                return t4;
+        }
+        return null;
     }
     
     @Override

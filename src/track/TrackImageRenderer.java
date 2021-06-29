@@ -1,6 +1,7 @@
 package track;
 
 import java.awt.*;
+import fsm.ImageRenderer;
 
 public class TrackImageRenderer implements ImageRenderer {
     protected Track track;

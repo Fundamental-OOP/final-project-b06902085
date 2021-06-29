@@ -6,7 +6,7 @@ import fsm.State;
 import fsm.WaitingPerFrame;
 import model.SpriteShape;
 import model.Sprite;
-
+import views.GameView;
 
 import java.awt.*;
 import static fsm.FiniteStateMachine.Transition.from;
@@ -26,8 +26,8 @@ public class Track extends Sprite {
     public Track(int id, Point location) {
         this.location = location;
         this.id = id;
-        shape = new SpriteShape(new Dimension(144, 1080), 
-                                new Dimension(0, 0), new Dimension(144, 1080));
+        shape = new SpriteShape(new Dimension(144, GameView.HEIGHT), 
+                                new Dimension(0, 0), new Dimension(144, GameView.HEIGHT));
         fsm = new FiniteStateMachine();
         ImageRenderer imageRenderer = new TrackImageRenderer(this);
         State clickOn = new WaitingPerFrame(3, new ClickEffect(imageStatesFromFolder("assets/clickeffect",imageRenderer)));

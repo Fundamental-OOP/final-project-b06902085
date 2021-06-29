@@ -12,8 +12,8 @@ import java.io.*;
 import javax.imageio.ImageIO;
 
 public class GameView extends JFrame {
-    public static final int HEIGHT = 1080;
-    public static final int WIDTH = 1920;
+    public static final int HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+    public static final int WIDTH = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
     public static final int T0 = 0;
     public static final int T1 = 1;
     public static final int T2 = 2;
@@ -55,18 +55,18 @@ public class GameView extends JFrame {
 				        game.clickTrack(T2);
 				        break;
                 	case KeyEvent.VK_K:
-				        game.clickTrack(T3);
-				        break;
+                        game.clickTrack(T3);
+                        break;
 			        case KeyEvent.VK_P:
-			        	//Pause
-			        	break;
+				        //Pause
+				        break;
 		        }
             }
 
             @Override
             public void keyReleased(KeyEvent keyEvent) {
-                switch(keyEvent.getKeyCode()) {
-                	case KeyEvent.VK_D:
+                switch (keyEvent.getKeyCode()) {
+                    case KeyEvent.VK_D:
 				        game.releaseTrack(T0);
 				        break;
                 	case KeyEvent.VK_F:
@@ -76,8 +76,8 @@ public class GameView extends JFrame {
 				        game.releaseTrack(T2);
 				        break;
                 	case KeyEvent.VK_K:
-				        game.releaseTrack(T3);
-				        break;
+                        game.releaseTrack(T3);
+                        break;
                 }
             }
         });
@@ -86,6 +86,7 @@ public class GameView extends JFrame {
     public static class Canvas extends JPanel implements GameLoop.View{
         private Screen screen;
         private Image backgroundImage;
+        private Image ScaledBackgroundImage;
 
         @Override
         public void render(Screen screen) {
@@ -95,14 +96,13 @@ public class GameView extends JFrame {
 
         public Canvas(String fileName) throws IOException {
             backgroundImage = ImageIO.read(new File(fileName));
+            ScaledBackgroundImage = backgroundImage.getScaledInstance(GameView.WIDTH, GameView.HEIGHT, Image.SCALE_SMOOTH);
         }
 
         @Override
         protected void paintComponent(Graphics g /*paintbrush*/) {
             super.paintComponent(g);
-            //g.setColor(Color.BLACK);
-            //g.fillRect(0, 0, GameView.WIDTH, GameView.HEIGHT);
-            g.drawImage(backgroundImage, 0, 0, this);
+            g.drawImage(ScaledBackgroundImage, 0, 0, this);
             
             screen.render(g); // ask the world to paint itself and paint the sprites on the canvas
         }

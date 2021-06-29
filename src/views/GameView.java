@@ -54,7 +54,7 @@ public class GameView extends JFrame {
             @Override
             public void keyPressed(KeyEvent keyEvent) {
                 if (state.equals("TITLE"))  {
-                    state = game.nextSong();
+                    state = game.enterMenu();
                 }
                 else    {
                     switch (keyEvent.getKeyCode()) {

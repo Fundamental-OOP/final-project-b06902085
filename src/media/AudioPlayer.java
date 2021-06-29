@@ -23,6 +23,7 @@ public class AudioPlayer {
             Logger.getLogger(AudioPlayer.class.getName()).log(Level.SEVERE, null, ex);
         }
         addAudioByFilePath("TITLE", new File("assets/audio/title.wav"));
+        addAudioByFilePath("A", new File("assets/audio/a.wav"));
         addAudioByFilePath("REFLECT", new File("assets/audio/reflect.wav"));
         addAudioByFilePath("COUNTRY_ROADS", new File("assets/audio/country_roads.wav"));
     }

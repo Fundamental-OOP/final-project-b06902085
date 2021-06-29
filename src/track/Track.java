@@ -30,7 +30,7 @@ public class Track extends Sprite {
                                 new Dimension(0, 0), new Dimension(144, GameView.HEIGHT));
         fsm = new FiniteStateMachine();
         ImageRenderer imageRenderer = new TrackImageRenderer(this);
-        State clickOn = new WaitingPerFrame(3, new ClickEffect(imageStatesFromFolder("assets/clickeffect",imageRenderer)));
+        State clickOn = new WaitingPerFrame(1, new ClickEffect(this,fsm,imageStatesFromFolder("assets/clickeffect",imageRenderer)));
         State clickOff = new WaitingPerFrame(2, new NoEffect(imageStatesFromFolder("assets/noeffect",imageRenderer)));
         fsm.setInitialState(clickOff);
         fsm.addTransition(from(clickOff).when(ON).to(clickOn));

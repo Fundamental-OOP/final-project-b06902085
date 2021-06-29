@@ -10,12 +10,14 @@ public class FiniteStateMachine implements StateMachine {
     private final Map<State, Map<Object, State>> transitionTable = new HashMap<>();
     private State initialState;
     private State current;
+    public boolean stateChange;
 
     public FiniteStateMachine() {
     }
 
     public void setInitialState(State initialState) {
         this.initialState = initialState;
+        this.stateChange = false;
         reset();
     }
 
@@ -33,6 +35,7 @@ public class FiniteStateMachine implements StateMachine {
             State to = transition.get(event);
             if (to != null) {
                 current = to;
+                stateChange = true;
             }
         }
     }

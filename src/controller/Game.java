@@ -2,10 +2,15 @@ package controller;
 
 import model.Screen;
 import track.Track;
+import note.Note;
+import views.GameView;
+
+import java.awt.*;
 
 public class Game extends GameLoop  {
     private final Screen screen;
     private final Track t1, t2, t3, t4;
+    private Note note;
     
     public Game(Screen screen, Track t1, Track t2, Track t3, Track t4)   {
         this.screen = screen;

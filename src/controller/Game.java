@@ -10,7 +10,11 @@ import java.awt.*;
 public class Game extends GameLoop  {
     private final Screen screen;
     private final Track t1, t2, t3, t4;
-    private Note note;
+
+    int borderWidth = 10;
+    int startpos = (GameView.WIDTH - 144 * 4 - 5 * borderWidth) / 2;
+    private Note note = new Note(new Point(startpos + borderWidth, 0));
+    //private Note note2 = new Note(new Point(startpos + 154 + borderWidth, 0));
     
     public Game(Screen screen, Track t1, Track t2, Track t3, Track t4)   {
         this.screen = screen;
@@ -18,6 +22,11 @@ public class Game extends GameLoop  {
 	    this.t2 = t2;
 	    this.t3 = t3;
 	    this.t4 = t4;
+        screen.addSprite(note);
+    }
+
+    public void dropNote()  {
+        note.update();
     }
 
     public void clickTrack(int T_NUM) {

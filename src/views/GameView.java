@@ -60,6 +60,8 @@ public class GameView extends JFrame {
 			        case KeyEvent.VK_P:
 				        //Pause
 				        break;
+                    case KeyEvent.VK_DOWN:
+                        break;
 		        }
             }
 

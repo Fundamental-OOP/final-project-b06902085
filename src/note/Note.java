@@ -11,6 +11,7 @@ import static utils.ImageStateUtils.imageStatesFromFolder;
 */
 import model.Sprite;
 import model.SpriteShape;
+import views.GameView;
 
 import java.awt.*;
 import java.io.*; 
@@ -41,6 +42,9 @@ public class Note extends Sprite    {
 
     @Override
     public void update() {
+        if (this.location.getY() <= GameView.HEIGHT - 100)    {
+            this.location.setLocation(this.location.getX(), this.location.getY() + 1);
+        }
     }
 
     @Override

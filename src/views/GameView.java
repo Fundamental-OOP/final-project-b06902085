@@ -47,13 +47,14 @@ public class GameView extends JFrame {
         setSize(WIDTH, HEIGHT);
         setContentPane(canvas);
         setVisible(true);
+        game.titleMusic();
 
         // Keyboard listener
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent keyEvent) {
                 if (state.equals("TITLE"))  {
-                    state = game.enterMenu();
+                    state = game.nextSong();
                 }
                 else    {
                     switch (keyEvent.getKeyCode()) {
@@ -81,7 +82,6 @@ public class GameView extends JFrame {
         protected void paintComponent(Graphics g /*paintbrush*/) {
             super.paintComponent(g);
             g.drawImage(images.get(state), 0, 0, getWidth(), getHeight(), this);
-
             screen.render(g); // ask the world to paint itself and paint the sprites on the canvas
         }
     }

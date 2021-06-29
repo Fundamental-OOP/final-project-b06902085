@@ -23,6 +23,7 @@ public class Game extends GameLoop  {
         catch (LineUnavailableException ex) {
             Logger.getLogger(AudioPlayer.class.getName()).log(Level.SEVERE, null, ex);
         }
+        songNames.add("TITLE");
         songNames.add("REFLECT");
         songNames.add("COUNTRY_ROADS");
     }
@@ -31,26 +32,23 @@ public class Game extends GameLoop  {
     protected Screen getScreen() {
         return screen;
     }
-    public String enterMenu() {
-        String songName = songNames.get(songIndex);
-        player.playSounds(songName);
-        return songName;
+    public void titleMusic() {
+        this.player.playSounds("TITLE");
     }
-
     // todo: encapsulate common behaviors
     public String previousSong()  {
         songIndex--;
         songIndex = (songIndex + songNames.size()) % songNames.size();
         String songName = songNames.get(songIndex);
-        player.stopSounds();
-        player.playSounds(songName);
+        this.player.stopSounds();
+        this.player.playSounds(songName);
         return songName;
     }
     public String nextSong()  {
         songIndex = (songIndex + 1) % songNames.size();
         String songName = songNames.get(songIndex);
-        player.stopSounds();
-        player.playSounds(songName);
+        this.player.stopSounds();
+        this.player.playSounds(songName);
         return songName;
     }
 }

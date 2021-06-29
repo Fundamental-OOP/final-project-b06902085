@@ -22,6 +22,7 @@ public class AudioPlayer {
         catch (LineUnavailableException ex) {
             Logger.getLogger(AudioPlayer.class.getName()).log(Level.SEVERE, null, ex);
         }
+        addAudioByFilePath("TITLE", new File("assets/audio/title.wav"));
         addAudioByFilePath("REFLECT", new File("assets/audio/reflect.wav"));
         addAudioByFilePath("COUNTRY_ROADS", new File("assets/audio/country_roads.wav"));
     }

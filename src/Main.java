@@ -33,13 +33,12 @@ public class Main   {
         Border b4 = new Border(new Point(startpos + 154 * 3, 0), new Color(0,0,0), (float) 0.6, borderWidth, GameView.HEIGHT);
         Border b5 = new Border(new Point(startpos + 154 * 4, 0), new Color(0,0,0), (float) 0.6, borderWidth, GameView.HEIGHT);
         
-
         Screen screen = new Screen(t1, t2, t3, t4, b1, b2, b3, b4, b5);
 
         ArrayList<String> buttonNames = new ArrayList<String>(Arrays.asList("D", "F", "J", "K"));
         ArrayList<TrackButton> trackButtons = new ArrayList<TrackButton>();
         for (int i = 0; i < 4; i++) {
-            trackButtons.add(new TrackButton(new Point(startpos + 154 * i + borderWidth, 700), buttonNames.get(i), 145, 145));
+            trackButtons.add(new TrackButton(new Point(startpos + 154 * i + borderWidth, 725), buttonNames.get(i), 145, 145));
             screen.addSprite(trackButtons.get(i));
         }
 

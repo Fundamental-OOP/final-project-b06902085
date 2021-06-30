@@ -36,20 +36,22 @@ public class FileHandler {
         return br;
     }
 
-    public static void process(Object fileName,List<Integer> T1,List<Integer> T2,List<Integer> T3,List<Integer> T4) {
+    public static int process(Object fileName,List<List<Integer>> NoteList) {
         try( BufferedReader br = getBufferedReader(fileName) ){
             String currentLine;
             char[] charArr;
             while((currentLine = br.readLine()) != null) {
                charArr = currentLine.toCharArray();
-               T1.add(Integer.parseInt(String.valueOf(charArr[0])));
-               T2.add(Integer.parseInt(String.valueOf(charArr[1])));
-               T3.add(Integer.parseInt(String.valueOf(charArr[2])));
-               T4.add(Integer.parseInt(String.valueOf(charArr[3])));
+               NoteList.get(0).add(Integer.parseInt(String.valueOf(charArr[0])));
+               NoteList.get(1).add(Integer.parseInt(String.valueOf(charArr[1])));
+               NoteList.get(2).add(Integer.parseInt(String.valueOf(charArr[2])));
+               NoteList.get(3).add(Integer.parseInt(String.valueOf(charArr[3])));
             } 
         }catch(IOException e) {
                 e.printStackTrace();   
         }
+
+        return NoteList.get(0).size();
     }
 
 }

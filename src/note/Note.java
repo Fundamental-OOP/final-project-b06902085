@@ -20,11 +20,15 @@ import javax.imageio.ImageIO;
 public class Note extends Sprite    {
     private final Point location;
     private final SpriteShape shape;
+    private final NoteDatabase db;
+    private final int trackID;
     private static Image image = null;
     
-    public Note(Point location)   {
+    public Note(Point location, NoteDatabase db,int trackID) {
         this.location = location;
         this.shape = new SpriteShape(new Dimension(145, 55), new Dimension(0, 0), new Dimension(145, 55));
+        this.db = db;
+        this.trackID = trackID;
         try {
             image = ImageIO.read(new File("./assets/note/shark_145x55.png"));
         }
@@ -45,9 +49,11 @@ public class Note extends Sprite    {
         if (this.location.getY() <= GameView.HEIGHT - 100) {
             this.location.setLocation(this.location.getX(), this.location.getY() + 1);
         }
-        else    {
-            this.location.setLocation(this.location.getX(), 0);   
+       
+        else  {
+            db.removeNote(trackID);
         }
+        
     }
 
     @Override

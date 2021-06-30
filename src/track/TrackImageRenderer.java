@@ -11,9 +11,8 @@ public class TrackImageRenderer implements ImageRenderer {
     }
 
     @Override
-    public void render(Image image, Graphics g) {
-        
+    public void render(Image image, Graphics g) { 
         Rectangle range = track.getRange();
-        g.drawImage(image, range.x + range.width, range.y, -range.width, range.height, null);
+        g.drawImage(image, range.x + range.width, range.y - 120, -range.width, range.height, null);
     }
 }

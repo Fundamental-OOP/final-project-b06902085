@@ -20,7 +20,7 @@ public class Main   {
         addAudioByFilePath(ClickEffect.AUDIO_CLICK2, new File("assets/audio/click2.wav"));
         addAudioByFilePath(ClickEffect.AUDIO_CLICK3, new File("assets/audio/click3.wav"));
         addAudioByFilePath(ClickEffect.AUDIO_CLICK4, new File("assets/audio/click4.wav"));
-        addFileByFilePath(GeneratorNote.SHEET1, new File("assets/sheet/example.txt"));
+        addFileByFilePath(NoteDatabase.SHEET1, new File("assets/sheet/example.txt"));
 
         Track t1 = new track.Track(0, new Point(startpos + borderWidth, 0));
         Track t2 = new track.Track(1, new Point(startpos + 154 * 1 + borderWidth, 0));

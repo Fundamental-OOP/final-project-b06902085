@@ -12,6 +12,8 @@ import java.awt.*;
 import static fsm.FiniteStateMachine.Transition.from;
 import static utils.ImageStateUtils.imageStatesFromFolder;
 import static track.Track.Click.*;
+import note.Note;
+import java.lang.Math;
 
 public class Track extends Sprite {
     private final int id;
@@ -47,6 +49,22 @@ public class Track extends Sprite {
 
     public void release() {
         fsm.trigger(OFF);
+    }
+
+    public String checkHit(Note note) {
+        if(note == null) {
+            return "NULL";
+        }
+
+        int buttonY = 725;
+        if (Math.abs(note.getY() - buttonY) < 20)    {
+            System.out.println("Perfect");
+            return "PERFECT";
+        } else if (Math.abs(note.getY()-buttonY) < 300) {
+            System.out.println("Miss " + note.getY() + " " + buttonY);
+            return "MISS";
+        }
+        return "NULL";
     }
 
     @Override

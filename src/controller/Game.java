@@ -25,7 +25,6 @@ public class Game extends GameLoop {
         this.db = new NoteDatabase(screen,startpos,borderWidth);
         db.play(NoteDatabase.SHEET1);
     }
-<<<<<<< HEAD
 /*
     public void dropNote()  {
         note.update();
@@ -37,13 +36,6 @@ public class Game extends GameLoop {
         if(!track.checkHit(db.getNote(T_NUM)).equals("NULL")){
             db.removeNote(T_NUM);
         }
-=======
-
-    public void clickTrack(int T_NUM) {
-        Track track = getTrack(T_NUM);
-        track.checkHit(note);
-        track.click();
->>>>>>> 4f4f4ed330eae272c77b48d9375306d6580fa3a5
     }
 
     public void releaseTrack(int T_NUM) {

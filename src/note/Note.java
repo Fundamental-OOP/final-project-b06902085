@@ -45,6 +45,9 @@ public class Note extends Sprite    {
         if (this.location.getY() <= GameView.HEIGHT - 100)    {
             this.location.setLocation(this.location.getX(), this.location.getY() + 1);
         }
+        else    {
+            this.location.setLocation(this.location.getX(), 0);   
+        }
     }
 
     @Override

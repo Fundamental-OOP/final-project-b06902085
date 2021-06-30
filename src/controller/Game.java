@@ -14,7 +14,6 @@ public class Game extends GameLoop  {
     int borderWidth = 10;
     int startpos = (GameView.WIDTH - 144 * 4 - 5 * borderWidth) / 2;
     private Note note = new Note(new Point(startpos + borderWidth, 0));
-    //private Note note2 = new Note(new Point(startpos + 154 + borderWidth, 0));
     
     public Game(Screen screen, Track t1, Track t2, Track t3, Track t4)   {
         this.screen = screen;

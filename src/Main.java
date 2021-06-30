@@ -5,7 +5,8 @@ import controller.Game;
 import model.Screen;
 import views.GameView;
 import java.io.File;
-import note.Note;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import static media.AudioPlayer.addAudioByFilePath;
 
@@ -29,10 +30,17 @@ public class Main   {
         Border b3 = new Border(new Point(startpos + 154 * 2, 0), new Color(0,0,0), (float) 0.6, borderWidth, GameView.HEIGHT);
         Border b4 = new Border(new Point(startpos + 154 * 3, 0), new Color(0,0,0), (float) 0.6, borderWidth, GameView.HEIGHT);
         Border b5 = new Border(new Point(startpos + 154 * 4, 0), new Color(0,0,0), (float) 0.6, borderWidth, GameView.HEIGHT);
-       
-        // Note note = new Note(new Point(startpos + borderWidth, 0));
+        
 
         Screen screen = new Screen(t1, t2, t3, t4, b1, b2, b3, b4, b5);
+
+        ArrayList<String> buttonNames = new ArrayList<String>(Arrays.asList("D", "F", "J", "K"));
+        ArrayList<TrackButton> trackButtons = new ArrayList<TrackButton>();
+        for (int i = 0; i < 4; i++) {
+            trackButtons.add(new TrackButton(new Point(startpos + 154 * i + borderWidth, 700), buttonNames.get(i), 145, 145));
+            screen.addSprite(trackButtons.get(i));
+        }
+
         Game game = new Game(screen, t1, t2, t3, t4);
 
         GameView view = new GameView(game);

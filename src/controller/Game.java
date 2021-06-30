@@ -24,12 +24,10 @@ public class Game extends GameLoop  {
         screen.addSprite(note);
     }
 
-    public void dropNote()  {
-        note.update();
-    }
-
     public void clickTrack(int T_NUM) {
-        getTrack(T_NUM).click();
+        Track track = getTrack(T_NUM);
+        track.checkHit(note);
+        track.click();
     }
 
     public void releaseTrack(int T_NUM) {

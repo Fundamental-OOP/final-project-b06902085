@@ -50,4 +50,6 @@ public class TrackButton extends Sprite {
     public Rectangle getRange() {
         return new Rectangle(this.location, this.shape.size);
     }
+
+
 }

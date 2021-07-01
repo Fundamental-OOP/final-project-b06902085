@@ -38,12 +38,14 @@ public class Intro extends Sprite {
 
     @Override
     public void update() {
+        
         try {
             Thread.sleep(500);
         }
         catch (InterruptedException e) {
             e.printStackTrace();
         }
+        
         this.seq.update();
     }
 

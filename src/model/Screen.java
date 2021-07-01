@@ -35,6 +35,12 @@ public class Screen {
         sprite.setScreen(null);
     }
 
+    public void removeSprites() {
+        for(Sprite s : sprites) {
+            removeSprite(s);
+        }
+    }
+
     public Collection<Sprite> getSprites(Rectangle area) {
         return sprites.stream()
                 .filter(s -> area.intersects(s.getBody()))

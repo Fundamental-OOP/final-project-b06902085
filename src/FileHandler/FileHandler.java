@@ -42,7 +42,6 @@ public class FileHandler {
             String currentLine;
             char[] charArr;
             bpn = Integer.parseInt(br.readLine());
-            System.out.println(bpn);
             while((currentLine = br.readLine()) != null) {
                charArr = currentLine.toCharArray();
                NoteList.get(0).add(Integer.parseInt(String.valueOf(charArr[0])));

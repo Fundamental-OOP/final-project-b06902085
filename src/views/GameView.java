@@ -33,6 +33,7 @@ public class GameView extends JFrame {
             addImageByFilePath("REFLECT", ImageIO.read(new File("./assets/img/reflect_bg.png")));
             addImageByFilePath("COUNTRY_ROADS", ImageIO.read(new File("./assets/img/ukelele.jpeg")));
             addImageByFilePath("GAME", ImageIO.read(new File("./assets/img/sea.png")));
+            addImageByFilePath("ENDING", ImageIO.read(new File("./assets/img/Result/Background(with character).png")));
             this.canvas = new Canvas();
         }
         catch (IOException e)   {
@@ -130,7 +131,9 @@ public class GameView extends JFrame {
         protected void paintComponent(Graphics g /*paintbrush*/) {
             super.paintComponent(g);
             g.drawImage(images.get(state), 0, 0, getWidth(), getHeight(),this);
-            screen.render(g); // ask the world to paint itself and paint the sprites on the canvas
+            if(g != null) {
+                screen.render(g); // ask the world to paint itself and paint the sprites on the canvas
+            }
         }
     }
 }

@@ -2,6 +2,7 @@ package note;
 
 import model.Screen;
 import FileHandler.FileHandler;
+import controller.Game;
 
 import java.awt.*;
 import java.util.List;
@@ -18,6 +19,7 @@ public class NoteDatabase extends Thread {
     private final int trackSize = 4;
     private final List<List<Integer>> NoteIDList;
     private final List<List<Note>> NoteList;
+    private final Game game;
 
     private int bpn = 0;
 
@@ -53,10 +55,12 @@ public class NoteDatabase extends Thread {
                 System.out.println("Thread Execution stopped unexpectedly");
                 return;
             }
+
         }
+        game.finishGame();
     }
 
-    public NoteDatabase(Screen screen,int startpos,int borderWidth){
+    public NoteDatabase(Game game, Screen screen,int startpos,int borderWidth){
         this.screen = screen;
         this.NoteIDList = new ArrayList<List<Integer>>(trackSize);
         this.NoteList = new ArrayList<List<Note>>(trackSize);
@@ -66,6 +70,7 @@ public class NoteDatabase extends Thread {
         }
         this.startpos = startpos;
         this.borderWidth = borderWidth;
+        this.game = game;
     }
 
     public void play(Object FileName) {

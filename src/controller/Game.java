@@ -6,8 +6,12 @@ import note.*;
 import views.GameView;
 import menu.Intro;
 import media.AudioPlayer;
+import Effect.Grade;
 
 import javax.sound.sampled.LineUnavailableException;
+
+import Effect.Grade;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,6 +38,7 @@ public class Game extends GameLoop {
     private static int currentCombo = 0;
     private static String finalRank;
     private NumberSprite comboSprite;
+    private Grade grader;
     
 
     int borderWidth = 10;
@@ -59,6 +64,7 @@ public class Game extends GameLoop {
         Track track = getTrack(T_NUM);
         track.click();
         String hitStatus = track.checkHit(db.getNote(T_NUM));
+        grader.setGradeStatus(hitStatus);
         if(!hitStatus.equals("NULL")){
             if (!hitStatus.equals("MISS"))    {
                 int maxCombo = db.getMaxCombo();
@@ -95,7 +101,8 @@ public class Game extends GameLoop {
             trackButtons.add(new TrackButton(new Point(startpos + 154 * i + borderWidth, 725), buttonNames.get(i), 145, 145));
             screen.addSprite(trackButtons.get(i));
         }
-
+        this.grader = new Grade(new Point(0,0));
+        screen.addSprite(grader);
         db.play(name);  
     }
 
@@ -175,6 +182,7 @@ public class Game extends GameLoop {
         soundEffectPlayer.playSounds("ENDING", false);
         System.out.println("end");
     }
+
     public String previousSong()  {
         clickSoundEffect();
         songIndex--;

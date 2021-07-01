@@ -101,9 +101,9 @@ public class Game extends GameLoop {
             trackButtons.add(new TrackButton(new Point(startpos + 154 * i + borderWidth, 725), buttonNames.get(i), 145, 145));
             screen.addSprite(trackButtons.get(i));
         }
+        db.play(name);  
         this.grader = new Grade(new Point(0,0));
         screen.addSprite(grader);
-        db.play(name);  
     }
 
     public void releaseTrack(int T_NUM) {

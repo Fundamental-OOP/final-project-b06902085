@@ -261,7 +261,7 @@ public class Game extends GameLoop {
         }
         clearScreen();
         screen.removeSprite(this.comboSprite);
-        screen.removeSprites();
+
         if(db != null) {
             db.resumeNote();
             db.interrupt();

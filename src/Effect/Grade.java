@@ -79,7 +79,6 @@ public class Grade extends Sprite  {
 
     @Override
     public void render(Graphics g) {
-        System.out.println("GG");
         g.drawImage(currentImg, location.x, location.y, (int) shape.size.getWidth(), (int) shape.size.getHeight(), null);
     }
 

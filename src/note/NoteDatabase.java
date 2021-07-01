@@ -25,6 +25,9 @@ public class NoteDatabase extends Thread {
     private int bpn = 0;
 
     public void run() {
+
+        boolean key = false;
+
         for(int i = 0;i < LineSize;i++){
             if(NoteIDList.get(0).get(i) == 1){
                 Note newNote = new Note(new Point(startpos + borderWidth, 0),this,0);
@@ -56,9 +59,22 @@ public class NoteDatabase extends Thread {
                 //System.out.println("Thread Execution stopped unexpectedly");
                 return;
             }
-
         }
-
+        while(!key) { 
+            key = true;
+            for(int i = 0;i < trackSize;i++){
+                if(!NoteList.get(i).isEmpty()) {
+                    key = false;
+                    try{
+                        Thread.sleep(100);
+                    } catch(InterruptedException e) {
+                        return;
+                    }
+                    break;
+                }
+            }
+        }
+        game.finishGame();
     }
 
     public NoteDatabase(Game game, Screen screen,int startpos,int borderWidth){
@@ -93,13 +109,6 @@ public class NoteDatabase extends Thread {
             screen.removeSprite(NoteList.get(T_NUM).get(0));
             NoteList.get(T_NUM).remove(0);
         }
-        for(int i = 0;i < trackSize;i++) {
-            if(!NoteList.get(i).isEmpty()) {
-                break;
-            }
-            game.finishGame();
-        }
 
-        
     }
 }

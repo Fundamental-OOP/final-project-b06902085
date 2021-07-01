@@ -144,7 +144,7 @@ public class Game extends GameLoop {
     }
 
     public void result() {
-       //this.screen.addSprite(new Result(new Point(154, 154)));
+       //Failed to implement
     }
     public String previousSong()  {
         AudioPlayer soundEffectPlayer = null;
@@ -197,4 +197,5 @@ public class Game extends GameLoop {
         }
         this.musicPlayer.stopSounds();
     }
+
 }

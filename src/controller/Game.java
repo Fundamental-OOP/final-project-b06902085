@@ -6,6 +6,8 @@ import note.*;
 import views.GameView;
 import menu.Intro;
 import media.AudioPlayer;
+
+import javax.lang.model.util.ElementScanner6;
 import javax.sound.sampled.LineUnavailableException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,7 +23,7 @@ import java.util.Arrays;
 public class Game extends GameLoop {
     private final Screen screen;
     private Intro intro;
-    public  ArrayList<String> songNames;
+    private  ArrayList<String> songNames;
     private ArrayList<String> buttonNames = new ArrayList<String>(Arrays.asList("D", "F", "J", "K"));
     private ArrayList<TrackButton> trackButtons = new ArrayList<TrackButton>();
     private ArrayList<Track> tracks = new ArrayList<Track>();
@@ -29,9 +31,10 @@ public class Game extends GameLoop {
     private NoteDatabase db = null;
     private static int songIndex;
     private AudioPlayer musicPlayer;
-    public static int cummulativeScore = 0;
-    public static int currentCombo = 0;
-    NumberSprite comboSprite;
+    private static int cummulativeScore = 0;
+    private static int currentCombo = 0;
+    private static String finalRank;
+    private NumberSprite comboSprite;
     
 
     int borderWidth = 10;
@@ -149,7 +152,21 @@ public class Game extends GameLoop {
     }
 
     public void result() {
-       //Failed to implement
+        if (cummulativeScore >= 900000)    {
+            finalRank = "S";
+        }
+        else if (cummulativeScore > 800000) {
+            finalRank = "A";
+        }
+        else if (cummulativeScore > 700000) {
+            finalRank = "B";
+        }
+        else if (cummulativeScore > 600000) {
+            finalRank = "C";
+        }
+        else    {
+            finalRank = "F";
+        }
     }
     public String previousSong()  {
         AudioPlayer soundEffectPlayer = null;

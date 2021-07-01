@@ -8,6 +8,7 @@ public class Main   {
         Screen screen = new Screen();
         Game game = new Game(screen);
         GameView view = new GameView(game);
+
         game.start();
         view.launch();
     }

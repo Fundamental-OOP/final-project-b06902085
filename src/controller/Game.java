@@ -4,14 +4,15 @@ import model.Screen;
 import track.*;
 import note.*;
 import views.GameView;
-
+import menu.Intro;
 import media.AudioPlayer;
 import javax.sound.sampled.LineUnavailableException;
-import static FileHandler.FileHandler.addFileByFilePath;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import java.util.ArrayList;
+
+import static FileHandler.FileHandler.addFileByFilePath;
 import java.awt.*;
 import java.io.File;
 import java.util.Arrays;
@@ -19,7 +20,7 @@ import java.util.Arrays;
 
 public class Game extends GameLoop {
     private final Screen screen;
-
+    private Intro intro;
     public  ArrayList<String> songNames;
     private ArrayList<String> buttonNames = new ArrayList<String>(Arrays.asList("D", "F", "J", "K"));
     private ArrayList<TrackButton> trackButtons = new ArrayList<TrackButton>();
@@ -35,13 +36,16 @@ public class Game extends GameLoop {
     
     public Game(Screen screen)   {
         this.screen = screen;
+        this.intro = new Intro();
+        screen.addSprite(this.intro);
+
+        this.songNames = new ArrayList<String>();
         try {
             this.musicPlayer = new AudioPlayer();
         }
         catch (LineUnavailableException ex) {
             Logger.getLogger(AudioPlayer.class.getName()).log(Level.SEVERE, null, ex);
         }
-        this.songNames = new ArrayList<>();
         addSong();
         this.db = new NoteDatabase(screen,startpos,borderWidth);  
     }
@@ -54,7 +58,7 @@ public class Game extends GameLoop {
         }
     }
 
-    public void play(){
+    public void play(Object name){
         addFileByFilePath(NoteDatabase.SHEET1, new File("assets/song/reflect/sheet.out"));
 
         for(int i = 0;i < 4;i++) {
@@ -72,7 +76,7 @@ public class Game extends GameLoop {
             screen.addSprite(trackButtons.get(i));
         }
 
-        db.play(NoteDatabase.SHEET1);  
+        db.play(name);  
     }
 
     public void releaseTrack(int T_NUM) {
@@ -82,49 +86,6 @@ public class Game extends GameLoop {
     private void addSong(){
         songNames.add("REFLECT");
         songNames.add("COUNTRY_ROADS");
-    }
-
-    public void titleMusic() {
-        this.musicPlayer.playSounds("TITLE");
-    }
-
-    public String enterMenu()   {
-        AudioPlayer soundEffectPlayer = null;
-        try {
-            soundEffectPlayer = new AudioPlayer();
-        }
-        catch (LineUnavailableException ex) {
-            Logger.getLogger(AudioPlayer.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        soundEffectPlayer.playSounds("A");
-        this.musicPlayer.stopSounds();
-        songIndex = 0;
-        String songName = songNames.get(songIndex);
-        this.musicPlayer.playSounds(songName);
-        return songName;
-    }
-
-    public String previousSong()  {
-        songIndex--;
-        songIndex = (songIndex + songNames.size()) % songNames.size();
-        String songName = songNames.get(songIndex);
-        this.musicPlayer.stopSounds();
-        this.musicPlayer.playSounds(songName);
-        return songName;
-    }
-    public String nextSong()  {
-        songIndex = (songIndex + 1) % songNames.size();
-        String songName = songNames.get(songIndex);
-        this.musicPlayer.stopSounds();
-        this.musicPlayer.playSounds(songName);
-        return songName;
-    }
-
-    public String currentSong() {
-        String songName = songNames.get(songIndex);
-        this.musicPlayer.stopSounds();
-        this.musicPlayer.playSounds(songName);
-        return songName;
     }
 
     private Track getTrack(int T_NUM){
@@ -145,4 +106,66 @@ public class Game extends GameLoop {
     protected Screen getScreen() {
         return screen;
     }
+    public void titleMusic() {
+        this.musicPlayer.playSounds("TITLE");
+    }
+    
+
+    // todo: encapsulate common behaviors
+    public String enterMenu()   {
+        this.screen.removeSprite(this.intro);
+        AudioPlayer soundEffectPlayer = null;
+        try {
+            soundEffectPlayer = new AudioPlayer();
+        }
+        catch (LineUnavailableException ex) {
+            Logger.getLogger(AudioPlayer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        soundEffectPlayer.playSounds("A");
+        this.musicPlayer.stopSounds();
+        songIndex = 0;
+        String songName = songNames.get(songIndex);
+        this.musicPlayer.playSounds(songName);
+        return songName;
+    }
+
+    public String previousSong()  {
+        AudioPlayer soundEffectPlayer = null;
+        try {
+            soundEffectPlayer = new AudioPlayer();
+        }
+        catch (LineUnavailableException ex) {
+            Logger.getLogger(AudioPlayer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        soundEffectPlayer.playSounds("A");
+        songIndex--;
+        songIndex = (songIndex + songNames.size()) % songNames.size();
+        String songName = songNames.get(songIndex);
+        this.musicPlayer.stopSounds();
+        this.musicPlayer.playSounds(songName);
+        return songName;
+    }
+    public String nextSong()  {
+        AudioPlayer soundEffectPlayer = null;
+        try {
+            soundEffectPlayer = new AudioPlayer();
+        }
+        catch (LineUnavailableException ex) {
+            Logger.getLogger(AudioPlayer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        soundEffectPlayer.playSounds("A");
+        songIndex = (songIndex + 1) % songNames.size();
+        String songName = songNames.get(songIndex);
+        this.musicPlayer.stopSounds();
+        this.musicPlayer.playSounds(songName);
+        return songName;
+    }
+
+    public String currentSong() {
+        String songName = songNames.get(songIndex);
+        this.musicPlayer.stopSounds();
+        this.musicPlayer.playSounds(songName);
+        return songName;
+    }
+
 }

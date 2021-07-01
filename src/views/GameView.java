@@ -73,9 +73,9 @@ public class GameView extends JFrame {
                         
                         case KeyEvent.VK_ENTER:
                         case KeyEvent.VK_S:
-                            state = "GAME";
                             game.currentSong();
-                            game.play();
+                            game.play(state);    
+                            state = "GAME";
                             break;
                     }
                 } else if(state.equals("GAME")) {
@@ -120,7 +120,6 @@ public class GameView extends JFrame {
 
     public static class Canvas extends JPanel implements GameLoop.View{
         private Screen screen;
-
         @Override
         public void render(Screen screen) {
             this.screen = screen;

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class NoteDatabase extends Thread {
     
-    public static final String SHEET1 = "sheet";
+    public static final String SHEET1 = "REFLECT";
     private final Screen screen;
     private int LineSize;
     private final int startpos;

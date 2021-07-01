@@ -173,7 +173,6 @@ public class Game extends GameLoop {
             Logger.getLogger(AudioPlayer.class.getName()).log(Level.SEVERE, null, ex);
         }
         soundEffectPlayer.playSounds("ENDING", false);
-        System.out.println("end");
     }
     public String previousSong()  {
         clickSoundEffect();
@@ -223,4 +222,7 @@ public class Game extends GameLoop {
         result();
     }
 
+    public void pauseGame() {
+        //
+    }
 }

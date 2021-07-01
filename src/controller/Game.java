@@ -30,6 +30,9 @@ public class Game extends GameLoop {
     private AudioPlayer musicPlayer;
     public static int cummulativeScore = 0;
     public static int currentCombo = 0;
+    
+    private String curState;
+    private ComboEffect combo;
 
     private final NoteDatabase db;
 
@@ -56,23 +59,35 @@ public class Game extends GameLoop {
         Track track = getTrack(T_NUM);
         track.click();
         String hitStatus = track.checkHit(db.getNote(T_NUM));
+        curState = hitStatus;
+        System.out.println(hitStatus);
+        HitEffect hits = new HitEffect("OTHER");
         if(!hitStatus.equals("NULL")){
-            if (!hitStatus.equals("MISS"))    {
+            if (!hitStatus.equals("MISS")) {
+
                 int maxCombo = db.getMaxCombo();
                 cummulativeScore += 100000 / (maxCombo*(maxCombo - 1) / 2) * currentCombo;
                 cummulativeScore += 900000 / maxCombo * (hitStatus.equals("PERFECT")? 1 : 0.5);
                 currentCombo++;
             }
-            else    {
+            else {
                 currentCombo = 0;
             }
+            hits = new HitEffect(hitStatus);
+            screen.addSprite(hits);
             System.out.printf("combo = %d, score = %d\n", currentCombo, cummulativeScore);
             db.removeNote(T_NUM);
+            screen.removeSprite(hits);
         }
     }
 
     public void play(Object name){
         addFileByFilePath(NoteDatabase.SHEET1, new File("assets/song/reflect/sheet.out"));
+
+
+        this.combo = new ComboEffect();
+        screen.addSprite(combo);
+
 
         for(int i = 0;i < 4;i++) {
             tracks.add(new track.Track(0, new Point(startpos + 154 * i + borderWidth, 0)));

@@ -77,7 +77,7 @@ public class Game extends GameLoop {
             }
             System.out.printf("combo = %d, score = %d\n", currentCombo, cummulativeScore);
             this.screen.removeSprite(this.comboSprite);
-            this.comboSprite = new NumberSprite(new Point(200, 500), currentCombo);
+            this.comboSprite = new NumberSprite(new Point(GameView.WIDTH / 2 - 30, GameView.HEIGHT / 2 - 100), currentCombo);
             this.screen.addSprite(this.comboSprite);
             db.removeNote(T_NUM);
         }
@@ -206,7 +206,7 @@ public class Game extends GameLoop {
         String songName = songNames.get(songIndex);
         this.musicPlayer.stopSounds();
         this.musicPlayer.playSounds(songName, false);
-        this.comboSprite = new NumberSprite(new Point(200, 500), currentCombo);
+        this.comboSprite = new NumberSprite(new Point(GameView.WIDTH / 2 - 30, GameView.HEIGHT / 2 - 100), currentCombo);
         screen.addSprite(this.comboSprite);
         return songName;
     }
@@ -223,6 +223,7 @@ public class Game extends GameLoop {
 
     public void finishGame() {
         GameView.state = "ENDING";
+        screen.removeSprite(this.comboSprite);
         screen.removeSprites();
         if(db != null) {
             db.interrupt();

@@ -18,8 +18,8 @@ public class NumberSprite extends Sprite  {
 
     @Override
     public void render(Graphics g) {
-        g.setFont(new Font("Arial Black", Font.BOLD, 20));
-        g.drawString("Combo " + Integer.toString(number), location.x, location.y);
+        g.setFont(new Font("Arial Black", Font.BOLD, 60));
+        g.drawString(Integer.toString(number), location.x, location.y);
     }
 
     @Override

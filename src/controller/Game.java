@@ -23,7 +23,7 @@ import java.util.Arrays;
 public class Game extends GameLoop {
     private final Screen screen;
     private Intro intro;
-    private  ArrayList<String> songNames;
+    public  ArrayList<String> songNames;
     private ArrayList<String> buttonNames = new ArrayList<String>(Arrays.asList("D", "F", "J", "K"));
     private ArrayList<TrackButton> trackButtons = new ArrayList<TrackButton>();
     private ArrayList<Track> tracks = new ArrayList<Track>();
@@ -167,8 +167,6 @@ public class Game extends GameLoop {
         else    {
             finalRank = "F";
         }
-    }
-    public String previousSong()  {
         AudioPlayer soundEffectPlayer = null;
         try {
             soundEffectPlayer = new AudioPlayer();
@@ -176,7 +174,10 @@ public class Game extends GameLoop {
         catch (LineUnavailableException ex) {
             Logger.getLogger(AudioPlayer.class.getName()).log(Level.SEVERE, null, ex);
         }
-        soundEffectPlayer.playSounds("A", false);
+        soundEffectPlayer.playSounds("ENDING", false);
+    }
+    public String previousSong()  {
+        clickSoundEffect();
         songIndex--;
         songIndex = (songIndex + songNames.size()) % songNames.size();
         String songName = songNames.get(songIndex);

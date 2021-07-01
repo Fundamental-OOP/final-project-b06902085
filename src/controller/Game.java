@@ -157,6 +157,7 @@ public class Game extends GameLoop {
     }
 
     public void result() {
+        this.screen.removeSprite(this.comboSprite);
         if (cummulativeScore >= 900000)    {
             finalRank = "S";
         }

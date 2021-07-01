@@ -1,8 +1,10 @@
 package controller;
 
 import model.Screen;
+import model.Sprite;
 import track.*;
 import note.*;
+import pause.Pause;
 import views.GameView;
 import menu.Intro;
 import media.AudioPlayer;
@@ -17,6 +19,7 @@ import static FileHandler.FileHandler.addFileByFilePath;
 import java.awt.*;
 import java.io.File;
 import java.util.Arrays;
+import java.util.List;
 
 
 public class Game extends GameLoop {
@@ -27,6 +30,7 @@ public class Game extends GameLoop {
     private ArrayList<TrackButton> trackButtons = new ArrayList<TrackButton>();
     private ArrayList<Track> tracks = new ArrayList<Track>();
     private ArrayList<Border> borders = new ArrayList<Border>();
+    private List<Sprite> currentSprites = new ArrayList<Sprite>();
     private NoteDatabase db = null;
     private static int songIndex;
     private AudioPlayer musicPlayer;
@@ -34,6 +38,8 @@ public class Game extends GameLoop {
     private static int currentCombo = 0;
     private static String finalRank;
     private NumberSprite comboSprite;
+    private Pause pausePage;
+    public static boolean threadSuspended = false;
     
 
     int borderWidth = 10;
@@ -78,7 +84,7 @@ public class Game extends GameLoop {
     }
 
     public void play(Object name){
-        db = new NoteDatabase(this,screen,startpos,borderWidth);
+        this.db = new NoteDatabase(this,screen,startpos,borderWidth);
         addFileByFilePath(NoteDatabase.SHEET1, new File("assets/song/reflect/sheet.out"));
         addFileByFilePath(NoteDatabase.SHEET2, new File("assets/song/country_road/example.out"));
         for(int i = 0;i < 4;i++) {
@@ -214,15 +220,44 @@ public class Game extends GameLoop {
 
     public void finishGame() {
         GameView.state = "ENDING";
-        screen.removeSprites();
-        if(db != null) {
-            db.interrupt();
-        }
-        this.musicPlayer.stopSounds();
+        stopGame();
         result();
     }
 
-    public void pauseGame() {
-        //
+    public String pauseGame() {
+        threadSuspended = !threadSuspended;
+        if(!threadSuspended) {
+            screen.addSprites(currentSprites.toArray(Sprite[]::new));
+            screen.removeSprite(pausePage);
+            db.resumeNote();
+            this.musicPlayer.resumeSound();
+            return "GAME";
+        } else {
+            currentSprites = new ArrayList<>(screen.getSprites());
+            screen.removeSprites();
+            pausePage = new Pause(new Point(0, 0));
+            screen.addSprite(pausePage);
+            db.suspendNote();
+            this.musicPlayer.pauseSound();
+            return "PAUSE";
+        }
+
+    }
+
+    public void stopGame() {
+        threadSuspended = false;
+        if(!currentSprites.isEmpty()) {
+            currentSprites.clear();
+        }
+        clearScreen();
+        if(db != null) {
+            db.resumeNote();
+            db.interrupt();
+        }
+        this.musicPlayer.stopSounds();
+    }
+
+    public void clearScreen(){
+        screen.removeSprites();
     }
 }

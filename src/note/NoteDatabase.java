@@ -7,6 +7,7 @@ import controller.Game;
 import java.awt.*;
 import java.util.List;
 import java.util.ArrayList;
+import static controller.Game.threadSuspended;
 
 public class NoteDatabase extends Thread {
     
@@ -21,6 +22,7 @@ public class NoteDatabase extends Thread {
     private final List<List<Integer>> NoteIDList;
     private final List<List<Note>> NoteList;
     private final Game game;
+    
 
     private int bpn = 0;
 
@@ -29,6 +31,16 @@ public class NoteDatabase extends Thread {
         boolean key = false;
 
         for(int i = 0;i < LineSize;i++){
+
+            while (threadSuspended) {
+                try{
+                    Thread.sleep(1);
+                } catch(InterruptedException e) {
+                    //System.out.println("Thread Execution stopped unexpectedly");
+                    return;
+                }
+            }
+            
             if(NoteIDList.get(0).get(i) == 1){
                 Note newNote = new Note(new Point(startpos + borderWidth, 0),this,0);
                 NoteList.get(0).add(newNote);
@@ -109,6 +121,27 @@ public class NoteDatabase extends Thread {
             screen.removeSprite(NoteList.get(T_NUM).get(0));
             NoteList.get(T_NUM).remove(0);
         }
-
     }
+
+    public void suspendNote() {
+        
+        for(int i = 0;i < trackSize;i++){
+            if(!NoteList.get(i).isEmpty()) {
+                for(Note n : NoteList.get(i)) {
+                    n.NoteSuspend();
+                }
+            }
+        }
+    }
+
+    public void resumeNote() {
+        for(int i = 0;i < trackSize;i++){
+            if(!NoteList.get(i).isEmpty()) {
+                for(Note n : NoteList.get(i)) {
+                    n.NoteResume();
+                }
+            }
+        }
+    }
+
 }

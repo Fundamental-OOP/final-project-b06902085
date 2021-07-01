@@ -33,6 +33,7 @@ public class GameView extends JFrame {
             addImageByFilePath("REFLECT", ImageIO.read(new File("./assets/img/reflect_bg.png")));
             addImageByFilePath("COUNTRY_ROADS", ImageIO.read(new File("./assets/img/ukelele.jpeg")));
             addImageByFilePath("GAME", ImageIO.read(new File("./assets/img/sea.png")));
+            addImageByFilePath("PAUSE", ImageIO.read(new File("./assets/img/black.png")));
             addImageByFilePath("ENDING", ImageIO.read(new File("./assets/img/Result/Background(with character).png")));
             this.canvas = new Canvas();
         }
@@ -74,8 +75,7 @@ public class GameView extends JFrame {
                         
                         case KeyEvent.VK_ENTER:
                         case KeyEvent.VK_S:
-                            game.currentSong();
-                            game.play(state);    
+                            game.play(game.currentSong());    
                             state = "GAME";
                             break;
                             
@@ -95,14 +95,29 @@ public class GameView extends JFrame {
                             game.clickTrack(T3);
                             break;
                         case KeyEvent.VK_Q:
-                            game.finishGame();
+                            game.stopGame();
                             state = game.currentSong();
                             break;
                         case KeyEvent.VK_P:
-                            game.pauseGame();
-
+                            state = game.pauseGame();
+                            break;
 		            }
-                } else if(state.equals("ENDING")) {
+                } else if(state.equals("PAUSE")) { 
+                    switch(keyEvent.getKeyCode()) {
+                        case KeyEvent.VK_C:
+                            state = game.pauseGame();
+                            break;
+                        case KeyEvent.VK_R:
+                            game.stopGame();
+                            game.play(game.currentSong());    
+                            state = "GAME";
+                            break;
+                        case KeyEvent.VK_B:
+                            game.stopGame();
+                            state = game.currentSong();
+                            break;
+                    }
+                }else if(state.equals("ENDING")) {
                     switch(keyEvent.getKeyCode()) {
                         case KeyEvent.VK_ENTER:
                             state = game.currentSong();

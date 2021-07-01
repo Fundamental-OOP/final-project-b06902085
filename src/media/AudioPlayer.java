@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 public class AudioPlayer {
     private Map<Object, File> sounds = new HashMap<>();
     private Clip clip;
+    private static long cliptime = 0;
 
     public AudioPlayer() throws LineUnavailableException    {
         try {
@@ -55,6 +56,16 @@ public class AudioPlayer {
         }
     }
     
+    public void pauseSound() {
+        cliptime = this.clip.getMicrosecondPosition();
+        this.clip.stop();
+    }
+
+    public void resumeSound() {
+        clip.setMicrosecondPosition(cliptime);
+        clip.start();
+    }
+
     public void stopSounds() {
         if(this.clip.isRunning()) {
             this.clip.stop();

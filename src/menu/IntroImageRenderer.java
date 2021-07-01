@@ -13,6 +13,6 @@ public class IntroImageRenderer implements ImageRenderer {
     @Override
     public void render(Image image, Graphics g) { 
         Rectangle range = intro.getRange();
-        g.drawImage(image, 0, 0, range.width - 500, range.height - 250, null);
+        g.drawImage(image, 0, 0, range.width, range.height, null);
     }
 }

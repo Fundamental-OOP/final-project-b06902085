@@ -28,6 +28,8 @@ public class Game extends GameLoop {
     private ArrayList<Border> borders = new ArrayList<Border>();
     private static int songIndex;
     private AudioPlayer musicPlayer;
+    public static int cummulativeScore = 0;
+    public static int currentCombo = 0;
 
     private final NoteDatabase db;
 
@@ -53,7 +55,18 @@ public class Game extends GameLoop {
     public void clickTrack(int T_NUM) {
         Track track = getTrack(T_NUM);
         track.click();
-        if(!track.checkHit(db.getNote(T_NUM)).equals("NULL")){
+        String hitStatus = track.checkHit(db.getNote(T_NUM));
+        if(!hitStatus.equals("NULL")){
+            if (!hitStatus.equals("MISS"))    {
+                int maxCombo = db.getMaxCombo();
+                cummulativeScore += 100000 / (maxCombo*(maxCombo - 1) / 2) * currentCombo;
+                cummulativeScore += 900000 / maxCombo * (hitStatus.equals("PERFECT")? 1 : 0.5);
+                currentCombo++;
+            }
+            else    {
+                currentCombo = 0;
+            }
+            System.out.printf("combo = %d, score = %d\n", currentCombo, cummulativeScore);
             db.removeNote(T_NUM);
         }
     }
@@ -114,14 +127,7 @@ public class Game extends GameLoop {
     // todo: encapsulate common behaviors
     public String enterMenu()   {
         this.screen.removeSprite(this.intro);
-        AudioPlayer soundEffectPlayer = null;
-        try {
-            soundEffectPlayer = new AudioPlayer();
-        }
-        catch (LineUnavailableException ex) {
-            Logger.getLogger(AudioPlayer.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        soundEffectPlayer.playSounds("A");
+        clickSoundEffect();
         this.musicPlayer.stopSounds();
         songIndex = 0;
         String songName = songNames.get(songIndex);
@@ -130,14 +136,7 @@ public class Game extends GameLoop {
     }
 
     public String previousSong()  {
-        AudioPlayer soundEffectPlayer = null;
-        try {
-            soundEffectPlayer = new AudioPlayer();
-        }
-        catch (LineUnavailableException ex) {
-            Logger.getLogger(AudioPlayer.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        soundEffectPlayer.playSounds("A");
+        clickSoundEffect();
         songIndex--;
         songIndex = (songIndex + songNames.size()) % songNames.size();
         String songName = songNames.get(songIndex);
@@ -146,14 +145,7 @@ public class Game extends GameLoop {
         return songName;
     }
     public String nextSong()  {
-        AudioPlayer soundEffectPlayer = null;
-        try {
-            soundEffectPlayer = new AudioPlayer();
-        }
-        catch (LineUnavailableException ex) {
-            Logger.getLogger(AudioPlayer.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        soundEffectPlayer.playSounds("A");
+        clickSoundEffect();
         songIndex = (songIndex + 1) % songNames.size();
         String songName = songNames.get(songIndex);
         this.musicPlayer.stopSounds();
@@ -162,10 +154,20 @@ public class Game extends GameLoop {
     }
 
     public String currentSong() {
+        clickSoundEffect();
         String songName = songNames.get(songIndex);
         this.musicPlayer.stopSounds();
         this.musicPlayer.playSounds(songName);
         return songName;
     }
-
+    public void clickSoundEffect()  {
+        AudioPlayer soundEffectPlayer = null;
+        try {
+            soundEffectPlayer = new AudioPlayer();
+        }
+        catch (LineUnavailableException ex) {
+            Logger.getLogger(AudioPlayer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        soundEffectPlayer.playSounds("A");
+    }
 }

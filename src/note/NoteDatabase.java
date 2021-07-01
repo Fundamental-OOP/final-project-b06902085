@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class NoteDatabase extends Thread {
     
     public static final String SHEET1 = "REFLECT";
+    public static final int maxCombo = 678;
     private final Screen screen;
     private int LineSize;
     private final int startpos;
@@ -75,6 +76,10 @@ public class NoteDatabase extends Thread {
 
     public Note getNote(int T_NUM) {
         return (NoteList.get(T_NUM).isEmpty())?null:NoteList.get(T_NUM).get(0);
+    }
+
+    public int getMaxCombo()    {
+        return maxCombo;
     }
 
     public void removeNote(int T_NUM) {

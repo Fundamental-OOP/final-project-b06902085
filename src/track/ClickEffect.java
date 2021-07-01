@@ -30,7 +30,7 @@ public class ClickEffect extends CyclicSequence {
    public void update() {
        super.update();
        if(fsm.stateChange){
-            switch(track.getID()){    
+            switch(track.getID()){  
                 case 0:
                     soundEffectPlayer.playSounds("AUDIO_CLICK1");
                     break;

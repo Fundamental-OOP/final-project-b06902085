@@ -58,7 +58,7 @@ public class NoteDatabase extends Thread {
             }
 
         }
-        game.finishGame();
+
     }
 
     public NoteDatabase(Game game, Screen screen,int startpos,int borderWidth){
@@ -93,5 +93,13 @@ public class NoteDatabase extends Thread {
             screen.removeSprite(NoteList.get(T_NUM).get(0));
             NoteList.get(T_NUM).remove(0);
         }
+        for(int i = 0;i < trackSize;i++) {
+            if(!NoteList.get(i).isEmpty()) {
+                break;
+            }
+            game.finishGame();
+        }
+
+        
     }
 }

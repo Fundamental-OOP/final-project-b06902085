@@ -8,8 +8,12 @@ import pause.Pause;
 import views.GameView;
 import menu.Intro;
 import media.AudioPlayer;
+import Effect.Grade;
 
 import javax.sound.sampled.LineUnavailableException;
+
+import Effect.Grade;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,6 +44,7 @@ public class Game extends GameLoop {
     private NumberSprite comboSprite;
     private Pause pausePage;
     public static boolean threadSuspended = false;
+    private Grade grader;
     
 
     int borderWidth = 10;
@@ -65,6 +70,7 @@ public class Game extends GameLoop {
         Track track = getTrack(T_NUM);
         track.click();
         String hitStatus = track.checkHit(db.getNote(T_NUM));
+        grader.setGradeStatus(hitStatus);
         if(!hitStatus.equals("NULL")){
             if (!hitStatus.equals("MISS"))    {
                 int maxCombo = db.getMaxCombo();
@@ -77,7 +83,7 @@ public class Game extends GameLoop {
             }
             System.out.printf("combo = %d, score = %d\n", currentCombo, cummulativeScore);
             this.screen.removeSprite(this.comboSprite);
-            this.comboSprite = new NumberSprite(new Point(200, 500), currentCombo);
+            this.comboSprite = new NumberSprite(new Point(GameView.WIDTH / 2 - 30, GameView.HEIGHT / 2 - 100), currentCombo);
             this.screen.addSprite(this.comboSprite);
             db.removeNote(T_NUM);
         }
@@ -101,8 +107,9 @@ public class Game extends GameLoop {
             trackButtons.add(new TrackButton(new Point(startpos + 154 * i + borderWidth, 725), buttonNames.get(i), 145, 145));
             screen.addSprite(trackButtons.get(i));
         }
-
         db.play(name);  
+        this.grader = new Grade(new Point(0,0));
+        screen.addSprite(grader);
     }
 
     public void releaseTrack(int T_NUM) {
@@ -180,6 +187,7 @@ public class Game extends GameLoop {
         }
         soundEffectPlayer.playSounds("ENDING", false);
     }
+
     public String previousSong()  {
         clickSoundEffect();
         songIndex--;
@@ -198,13 +206,15 @@ public class Game extends GameLoop {
         return songName;
     }
 
-    public String currentSong() {
+    public String currentSong(boolean newGame) {
         clickSoundEffect();
         String songName = songNames.get(songIndex);
         this.musicPlayer.stopSounds();
         this.musicPlayer.playSounds(songName, false);
-        this.comboSprite = new NumberSprite(new Point(200, 500), currentCombo);
-        screen.addSprite(this.comboSprite);
+        if (newGame){
+            this.comboSprite = new NumberSprite(new Point(GameView.WIDTH / 2 - 30, GameView.HEIGHT / 2 - 100), currentCombo);
+            screen.addSprite(this.comboSprite);
+        }
         return songName;
     }
     public void clickSoundEffect()  {
@@ -250,6 +260,8 @@ public class Game extends GameLoop {
             currentSprites.clear();
         }
         clearScreen();
+        screen.removeSprite(this.comboSprite);
+        screen.removeSprites();
         if(db != null) {
             db.resumeNote();
             db.interrupt();

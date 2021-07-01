@@ -75,7 +75,7 @@ public class GameView extends JFrame {
                         
                         case KeyEvent.VK_ENTER:
                         case KeyEvent.VK_S:
-                            game.play(game.currentSong());    
+                            game.play(game.currentSong(true));    
                             state = "GAME";
                             break;
                             
@@ -96,7 +96,7 @@ public class GameView extends JFrame {
                             break;
                         case KeyEvent.VK_Q:
                             game.stopGame();
-                            state = game.currentSong();
+                            state = game.currentSong(true);
                             break;
                         case KeyEvent.VK_P:
                             state = game.pauseGame();
@@ -109,18 +109,18 @@ public class GameView extends JFrame {
                             break;
                         case KeyEvent.VK_R:
                             game.stopGame();
-                            game.play(game.currentSong());    
+                            game.play(game.currentSong(true));    
                             state = "GAME";
                             break;
                         case KeyEvent.VK_B:
                             game.stopGame();
-                            state = game.currentSong();
+                            state = game.currentSong(true);
                             break;
                     }
                 }else if(state.equals("ENDING")) {
                     switch(keyEvent.getKeyCode()) {
                         case KeyEvent.VK_ENTER:
-                            state = game.currentSong();
+                            state = game.currentSong(false);
                             break;
                     }
                 }

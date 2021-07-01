@@ -20,7 +20,7 @@ public abstract class GameLoop {
             Screen screen = getScreen();
             screen.update();
             view.render(screen);
-            delay(15);
+            delay(1);
         }
     }
 

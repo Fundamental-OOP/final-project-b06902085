@@ -24,8 +24,12 @@ public class AudioPlayer {
         }
         addAudioByFilePath("TITLE", new File("assets/audio/title.wav"));
         addAudioByFilePath("A", new File("assets/audio/a.wav"));
-        addAudioByFilePath("REFLECT", new File("assets/audio/reflect.wav"));
+        addAudioByFilePath("REFLECT", new File("assets/audio/reflect_mixdown.au"));
         addAudioByFilePath("COUNTRY_ROADS", new File("assets/audio/country_roads.wav"));
+        addAudioByFilePath("AUDIO_CLICK1", new File("assets/audio/click1.wav"));
+        addAudioByFilePath("AUDIO_CLICK2", new File("assets/audio/click2.wav"));
+        addAudioByFilePath("AUDIO_CLICK3", new File("assets/audio/click3.wav"));
+        addAudioByFilePath("AUDIO_CLICK4", new File("assets/audio/click4.wav"));
     }
 
     public void addAudioByFilePath(String audioName, File file) {
@@ -36,10 +40,14 @@ public class AudioPlayer {
         this.sounds.put(audioName, Paths.get(path).toFile());
     }
 
-    public void playSounds(Object audioName) {
+    public void playSounds(Object audioName,boolean loop) {
+        
         try {
             this.clip.open(AudioSystem.getAudioInputStream(sounds.get(audioName)));
             this.clip.start();
+            if(loop) {
+                clip.loop(Clip.LOOP_CONTINUOUSLY);
+            }
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -47,7 +55,9 @@ public class AudioPlayer {
     }
     
     public void stopSounds() {
-        this.clip.stop();
+        if(this.clip.isRunning()) {
+            this.clip.stop();
+        }
         this.clip.close();
     }
 

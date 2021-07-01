@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class NoteDatabase extends Thread {
     
     public static final String SHEET1 = "REFLECT";
+    public static final String SHEET2 = "COUNTRY_ROADS";
     public static final int maxCombo = 678;
     private final Screen screen;
     private int LineSize;
@@ -52,7 +53,7 @@ public class NoteDatabase extends Thread {
             try{
                 Thread.sleep(60000/(bpn*4));
             } catch(InterruptedException e) {
-                System.out.println("Thread Execution stopped unexpectedly");
+                //System.out.println("Thread Execution stopped unexpectedly");
                 return;
             }
 

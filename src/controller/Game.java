@@ -13,7 +13,6 @@ import java.util.logging.Logger;
 import java.util.ArrayList;
 
 import static FileHandler.FileHandler.addFileByFilePath;
-import static views.GameView.state;
 import java.awt.*;
 import java.io.File;
 import java.util.Arrays;
@@ -27,6 +26,7 @@ public class Game extends GameLoop {
     private ArrayList<TrackButton> trackButtons = new ArrayList<TrackButton>();
     private ArrayList<Track> tracks = new ArrayList<Track>();
     private ArrayList<Border> borders = new ArrayList<Border>();
+    private NoteDatabase db = null;
     private static int songIndex;
     private AudioPlayer musicPlayer;
     public static int cummulativeScore = 0;
@@ -35,7 +35,7 @@ public class Game extends GameLoop {
     private String curState;
     private ComboEffect combo;
 
-    private final NoteDatabase db;
+    
 
     int borderWidth = 10;
     int startpos = (GameView.WIDTH - 144 * 4 - 5 * borderWidth) / 2;
@@ -52,8 +52,7 @@ public class Game extends GameLoop {
         catch (LineUnavailableException ex) {
             Logger.getLogger(AudioPlayer.class.getName()).log(Level.SEVERE, null, ex);
         }
-        addSong();
-        this.db = new NoteDatabase(this,screen,startpos,borderWidth);  
+        addSong();  
     }
 
     public void clickTrack(int T_NUM) {
@@ -158,6 +157,9 @@ public class Game extends GameLoop {
         return songName;
     }
 
+    public void result() {
+       //this.screen.addSprite(new Result(new Point(154, 154)));
+    }
     public String previousSong()  {
         AudioPlayer soundEffectPlayer = null;
         try {
@@ -204,6 +206,9 @@ public class Game extends GameLoop {
     public void finishGame() {
         GameView.state = "ENDING";
         screen.removeSprites();
+        if(db != null) {
+            db.interrupt();
+        }
         this.musicPlayer.stopSounds();
     }
 }

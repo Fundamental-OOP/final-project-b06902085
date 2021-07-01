@@ -33,10 +33,6 @@ public class HitEffect extends Sprite{
             {
                 curImg = ImageIO.read(new File("./assets/GameEffect/Miss.png"));
             }
-            else if (state.equals("COMBO"))
-            {
-                curImg = ImageIO.read(new File("./assets/GameEffect/combo.png"));
-            }
         }
         catch (IOException e)   {
             throw new RuntimeException(e);

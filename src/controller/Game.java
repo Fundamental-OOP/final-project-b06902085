@@ -7,7 +7,6 @@ import views.GameView;
 import menu.Intro;
 import media.AudioPlayer;
 
-import javax.lang.model.util.ElementScanner6;
 import javax.sound.sampled.LineUnavailableException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,9 +42,8 @@ public class Game extends GameLoop {
     public Game(Screen screen)   {
         this.screen = screen;
         this.intro = new Intro();
-        this.comboSprite = new NumberSprite(new Point(200, 500), currentCombo);
         screen.addSprite(this.intro);
-        screen.addSprite(this.comboSprite);
+        
 
         this.songNames = new ArrayList<String>();
         try {
@@ -175,6 +173,7 @@ public class Game extends GameLoop {
             Logger.getLogger(AudioPlayer.class.getName()).log(Level.SEVERE, null, ex);
         }
         soundEffectPlayer.playSounds("ENDING", false);
+        System.out.println("end");
     }
     public String previousSong()  {
         clickSoundEffect();
@@ -199,6 +198,8 @@ public class Game extends GameLoop {
         String songName = songNames.get(songIndex);
         this.musicPlayer.stopSounds();
         this.musicPlayer.playSounds(songName, false);
+        this.comboSprite = new NumberSprite(new Point(200, 500), currentCombo);
+        screen.addSprite(this.comboSprite);
         return songName;
     }
     public void clickSoundEffect()  {
@@ -219,6 +220,7 @@ public class Game extends GameLoop {
             db.interrupt();
         }
         this.musicPlayer.stopSounds();
+        result();
     }
 
 }

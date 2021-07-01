@@ -41,11 +41,7 @@ public class AudioPlayer {
     }
 
     public void playSounds(Object audioName,boolean loop) {
-
-        if(this.clip.isOpen()) {
-            stopSounds();
-        }
-
+        
         try {
             this.clip.open(AudioSystem.getAudioInputStream(sounds.get(audioName)));
             this.clip.start();

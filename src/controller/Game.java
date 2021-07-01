@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import java.util.ArrayList;
 
 import static FileHandler.FileHandler.addFileByFilePath;
+import static views.GameView.state;
 import java.awt.*;
 import java.io.File;
 import java.util.Arrays;
@@ -52,7 +53,7 @@ public class Game extends GameLoop {
             Logger.getLogger(AudioPlayer.class.getName()).log(Level.SEVERE, null, ex);
         }
         addSong();
-        this.db = new NoteDatabase(screen,startpos,borderWidth);  
+        this.db = new NoteDatabase(this,screen,startpos,borderWidth);  
     }
 
     public void clickTrack(int T_NUM) {
@@ -198,5 +199,11 @@ public class Game extends GameLoop {
             Logger.getLogger(AudioPlayer.class.getName()).log(Level.SEVERE, null, ex);
         }
         soundEffectPlayer.playSounds("A", false);
+    }
+
+    public void finishGame() {
+        GameView.state = "ENDING";
+        screen.removeSprites();
+        this.musicPlayer.stopSounds();
     }
 }

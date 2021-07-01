@@ -37,9 +37,12 @@ public class FileHandler {
     }
 
     public static int process(Object fileName,List<List<Integer>> NoteList) {
+        int bpn = 0;
         try( BufferedReader br = getBufferedReader(fileName) ){
             String currentLine;
             char[] charArr;
+            bpn = Integer.parseInt(br.readLine());
+            System.out.println(bpn);
             while((currentLine = br.readLine()) != null) {
                charArr = currentLine.toCharArray();
                NoteList.get(0).add(Integer.parseInt(String.valueOf(charArr[0])));
@@ -51,7 +54,7 @@ public class FileHandler {
                 e.printStackTrace();   
         }
 
-        return NoteList.get(0).size();
+        return bpn;
     }
 
 }

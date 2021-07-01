@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class NoteDatabase extends Thread {
     
-    public static final String SHEET1 = "example";
+    public static final String SHEET1 = "sheet";
     private final Screen screen;
     private int LineSize;
     private final int startpos;
@@ -17,6 +17,8 @@ public class NoteDatabase extends Thread {
     private final int trackSize = 4;
     private final List<List<Integer>> NoteIDList;
     private final List<List<Note>> NoteList;
+
+    private int bpn = 0;
 
     public void run() {
         for(int i = 0;i < LineSize;i++){
@@ -45,7 +47,7 @@ public class NoteDatabase extends Thread {
             }
 
             try{
-                Thread.sleep(2000);
+                Thread.sleep(60000/(bpn*4));
             } catch(InterruptedException e) {
                 System.out.println("Thread Execution stopped unexpectedly");
                 return;
@@ -66,7 +68,8 @@ public class NoteDatabase extends Thread {
     }
 
     public void play(Object FileName) {
-        LineSize = FileHandler.process(FileName,NoteIDList);
+        bpn = FileHandler.process(FileName,NoteIDList);
+        LineSize = NoteIDList.get(0).size();
         start();
     }
 

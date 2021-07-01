@@ -20,9 +20,9 @@ public class ClickEffect extends CyclicSequence {
        this.fsm = fsm;
        this.track = track;
        try {
-        this.soundEffectPlayer = new AudioPlayer();
+            this.soundEffectPlayer = new AudioPlayer();
        } catch (LineUnavailableException ex) {
-        Logger.getLogger(AudioPlayer.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AudioPlayer.class.getName()).log(Level.SEVERE, null, ex);
        }   
     }
    
@@ -32,16 +32,16 @@ public class ClickEffect extends CyclicSequence {
        if(fsm.stateChange){
             switch(track.getID()){  
                 case 0:
-                    soundEffectPlayer.playSounds("AUDIO_CLICK1");
+                    soundEffectPlayer.playSounds("AUDIO_CLICK1",false);
                     break;
                 case 1:
-                    soundEffectPlayer.playSounds("AUDIO_CLICK2");
+                    soundEffectPlayer.playSounds("AUDIO_CLICK2",false);
                     break;
                 case 2:
-                    soundEffectPlayer.playSounds("AUDIO_CLICK3");
+                    soundEffectPlayer.playSounds("AUDIO_CLICK3",false);
                     break;
                 case 3:
-                    soundEffectPlayer.playSounds("AUDIO_CLICK4");
+                    soundEffectPlayer.playSounds("AUDIO_CLICK4",false);
                     break;
             }
             fsm.stateChange = false;

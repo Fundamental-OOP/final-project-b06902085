@@ -120,28 +120,42 @@ public class Game extends GameLoop {
         return screen;
     }
     public void titleMusic() {
-        this.musicPlayer.playSounds("TITLE");
+        this.musicPlayer.playSounds("TITLE",true);
     }
     
 
     // todo: encapsulate common behaviors
     public String enterMenu()   {
         this.screen.removeSprite(this.intro);
-        clickSoundEffect();
+        AudioPlayer soundEffectPlayer = null;
+        try {
+            soundEffectPlayer = new AudioPlayer();
+        }
+        catch (LineUnavailableException ex) {
+            Logger.getLogger(AudioPlayer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        soundEffectPlayer.playSounds("A", false);
         this.musicPlayer.stopSounds();
         songIndex = 0;
         String songName = songNames.get(songIndex);
-        this.musicPlayer.playSounds(songName);
+        this.musicPlayer.playSounds(songName, true);
         return songName;
     }
 
     public String previousSong()  {
-        clickSoundEffect();
+        AudioPlayer soundEffectPlayer = null;
+        try {
+            soundEffectPlayer = new AudioPlayer();
+        }
+        catch (LineUnavailableException ex) {
+            Logger.getLogger(AudioPlayer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        soundEffectPlayer.playSounds("A", false);
         songIndex--;
         songIndex = (songIndex + songNames.size()) % songNames.size();
         String songName = songNames.get(songIndex);
         this.musicPlayer.stopSounds();
-        this.musicPlayer.playSounds(songName);
+        this.musicPlayer.playSounds(songName, true);
         return songName;
     }
     public String nextSong()  {
@@ -149,7 +163,7 @@ public class Game extends GameLoop {
         songIndex = (songIndex + 1) % songNames.size();
         String songName = songNames.get(songIndex);
         this.musicPlayer.stopSounds();
-        this.musicPlayer.playSounds(songName);
+        this.musicPlayer.playSounds(songName, true);
         return songName;
     }
 
@@ -157,7 +171,7 @@ public class Game extends GameLoop {
         clickSoundEffect();
         String songName = songNames.get(songIndex);
         this.musicPlayer.stopSounds();
-        this.musicPlayer.playSounds(songName);
+        this.musicPlayer.playSounds(songName, false);
         return songName;
     }
     public void clickSoundEffect()  {
@@ -168,6 +182,6 @@ public class Game extends GameLoop {
         catch (LineUnavailableException ex) {
             Logger.getLogger(AudioPlayer.class.getName()).log(Level.SEVERE, null, ex);
         }
-        soundEffectPlayer.playSounds("A");
+        soundEffectPlayer.playSounds("A", false);
     }
 }

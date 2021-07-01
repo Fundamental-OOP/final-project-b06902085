@@ -52,18 +52,15 @@ public class Track extends Sprite {
     }
 
     public String checkHit(Note note) {
-        if(note == null) {
-            return "NULL";
-        }
+        if(note == null)    return "NULL";
 
         int buttonY = 725;
-        if (Math.abs(note.getY() - buttonY) < 20)    {
-            System.out.println("Perfect");
-            return "PERFECT";
-        } else if (Math.abs(note.getY()-buttonY) < 300) {
-            System.out.println("Miss " + note.getY() + " " + buttonY);
-            return "MISS";
-        }
+        int distance = Math.abs(note.getY() - buttonY);
+        if (distance < 20)  return "PERFECT";
+        if (distance < 50)  return "GOOD";
+        if (distance < 100) return "MISS";
+
+        // if the note is too far away, the click is not considered a miss
         return "NULL";
     }
 

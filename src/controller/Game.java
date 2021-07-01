@@ -5,7 +5,6 @@ import track.Track;
 import note.NoteDatabase;
 import views.GameView;
 
-import java.awt.*;
 
 public class Game extends GameLoop {
     private final Screen screen;
@@ -14,7 +13,6 @@ public class Game extends GameLoop {
 
     int borderWidth = 10;
     int startpos = (GameView.WIDTH - 144 * 4 - 5 * borderWidth) / 2;
-    //private Note note = new Note(new Point(startpos + borderWidth, 0));
     
     public Game(Screen screen, Track t1, Track t2, Track t3, Track t4)   {
         this.screen = screen;
@@ -25,11 +23,7 @@ public class Game extends GameLoop {
         this.db = new NoteDatabase(screen,startpos,borderWidth);
         db.play(NoteDatabase.SHEET1);
     }
-/*
-    public void dropNote()  {
-        note.update();
-    }
-*/
+
     public void clickTrack(int T_NUM) {
         Track track = getTrack(T_NUM);
         track.click();

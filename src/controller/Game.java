@@ -157,7 +157,6 @@ public class Game extends GameLoop {
     }
 
     public void result() {
-        this.screen.removeSprite(this.comboSprite);
         if (cummulativeScore >= 900000)    {
             finalRank = "S";
         }
@@ -201,13 +200,15 @@ public class Game extends GameLoop {
         return songName;
     }
 
-    public String currentSong() {
+    public String currentSong(boolean newGame) {
         clickSoundEffect();
         String songName = songNames.get(songIndex);
         this.musicPlayer.stopSounds();
         this.musicPlayer.playSounds(songName, false);
-        this.comboSprite = new NumberSprite(new Point(GameView.WIDTH / 2 - 30, GameView.HEIGHT / 2 - 100), currentCombo);
-        screen.addSprite(this.comboSprite);
+        if (newGame){
+            this.comboSprite = new NumberSprite(new Point(GameView.WIDTH / 2 - 30, GameView.HEIGHT / 2 - 100), currentCombo);
+            screen.addSprite(this.comboSprite);
+        }
         return songName;
     }
     public void clickSoundEffect()  {

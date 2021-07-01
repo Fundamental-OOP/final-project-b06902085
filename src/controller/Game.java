@@ -107,7 +107,7 @@ public class Game extends GameLoop {
         return screen;
     }
     public void titleMusic() {
-        this.musicPlayer.playSounds("TITLE");
+        this.musicPlayer.playSounds("TITLE",true);
     }
     
 
@@ -121,11 +121,11 @@ public class Game extends GameLoop {
         catch (LineUnavailableException ex) {
             Logger.getLogger(AudioPlayer.class.getName()).log(Level.SEVERE, null, ex);
         }
-        soundEffectPlayer.playSounds("A");
+        soundEffectPlayer.playSounds("A",true);
         this.musicPlayer.stopSounds();
         songIndex = 0;
         String songName = songNames.get(songIndex);
-        this.musicPlayer.playSounds(songName);
+        this.musicPlayer.playSounds(songName,true);
         return songName;
     }
 
@@ -137,12 +137,12 @@ public class Game extends GameLoop {
         catch (LineUnavailableException ex) {
             Logger.getLogger(AudioPlayer.class.getName()).log(Level.SEVERE, null, ex);
         }
-        soundEffectPlayer.playSounds("A");
+        soundEffectPlayer.playSounds("A",true);
         songIndex--;
         songIndex = (songIndex + songNames.size()) % songNames.size();
         String songName = songNames.get(songIndex);
         this.musicPlayer.stopSounds();
-        this.musicPlayer.playSounds(songName);
+        this.musicPlayer.playSounds(songName,true);
         return songName;
     }
     public String nextSong()  {
@@ -153,18 +153,18 @@ public class Game extends GameLoop {
         catch (LineUnavailableException ex) {
             Logger.getLogger(AudioPlayer.class.getName()).log(Level.SEVERE, null, ex);
         }
-        soundEffectPlayer.playSounds("A");
+        soundEffectPlayer.playSounds("A",true);
         songIndex = (songIndex + 1) % songNames.size();
         String songName = songNames.get(songIndex);
         this.musicPlayer.stopSounds();
-        this.musicPlayer.playSounds(songName);
+        this.musicPlayer.playSounds(songName,true);
         return songName;
     }
 
     public String currentSong() {
         String songName = songNames.get(songIndex);
         this.musicPlayer.stopSounds();
-        this.musicPlayer.playSounds(songName);
+        this.musicPlayer.playSounds(songName,false);
         return songName;
     }
 

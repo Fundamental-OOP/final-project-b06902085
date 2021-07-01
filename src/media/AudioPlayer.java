@@ -40,10 +40,18 @@ public class AudioPlayer {
         this.sounds.put(audioName, Paths.get(path).toFile());
     }
 
-    public void playSounds(Object audioName) {
+    public void playSounds(Object audioName,boolean loop) {
+
+        if(this.clip.isOpen()) {
+            stopSounds();
+        }
+
         try {
             this.clip.open(AudioSystem.getAudioInputStream(sounds.get(audioName)));
             this.clip.start();
+            if(loop) {
+                clip.loop(Clip.LOOP_CONTINUOUSLY);
+            }
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -51,7 +59,9 @@ public class AudioPlayer {
     }
     
     public void stopSounds() {
-        this.clip.stop();
+        if(this.clip.isRunning()) {
+            this.clip.stop();
+        }
         this.clip.close();
     }
 

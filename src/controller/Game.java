@@ -31,7 +31,7 @@ public class Game extends GameLoop {
     private AudioPlayer musicPlayer;
     public static int cummulativeScore = 0;
     public static int currentCombo = 0;
-
+    NumberSprite comboSprite;
     
 
     int borderWidth = 10;
@@ -40,7 +40,9 @@ public class Game extends GameLoop {
     public Game(Screen screen)   {
         this.screen = screen;
         this.intro = new Intro();
+        this.comboSprite = new NumberSprite(new Point(200, 500), currentCombo);
         screen.addSprite(this.intro);
+        screen.addSprite(this.comboSprite);
 
         this.songNames = new ArrayList<String>();
         try {
@@ -67,6 +69,9 @@ public class Game extends GameLoop {
                 currentCombo = 0;
             }
             System.out.printf("combo = %d, score = %d\n", currentCombo, cummulativeScore);
+            this.screen.removeSprite(this.comboSprite);
+            this.comboSprite = new NumberSprite(new Point(200, 500), currentCombo);
+            this.screen.addSprite(this.comboSprite);
             db.removeNote(T_NUM);
         }
     }

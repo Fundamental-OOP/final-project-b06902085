@@ -29,7 +29,7 @@ public class GameView extends JFrame {
     public GameView(Game game) throws HeadlessException {
         
         try {
-            addImageByFilePath("TITLE", ImageIO.read(new File("./assets/img/anm7064.jpeg")));
+            addImageByFilePath("TITLE", ImageIO.read(new File("./assets/img/Title/Background.png")));
             addImageByFilePath("REFLECT", ImageIO.read(new File("./assets/img/reflect_bg.png")));
             addImageByFilePath("COUNTRY_ROADS", ImageIO.read(new File("./assets/img/ukelele.jpeg")));
             addImageByFilePath("GAME", ImageIO.read(new File("./assets/img/sea.png")));

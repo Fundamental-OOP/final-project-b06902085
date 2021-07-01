@@ -78,6 +78,7 @@ public class GameView extends JFrame {
                             game.play(state);    
                             state = "GAME";
                             break;
+                            
                     }
                 } else if(state.equals("GAME")) {
                     switch (keyEvent.getKeyCode()) {
@@ -93,7 +94,18 @@ public class GameView extends JFrame {
                 	    case KeyEvent.VK_K:
                             game.clickTrack(T3);
                             break;
+                        case KeyEvent.VK_Q:
+                            game.finishGame();
+                            state = game.currentSong();
+                            break;
 		            }
+                } else if(state.equals("ENDING")) {
+                    game.result();
+                    switch(keyEvent.getKeyCode()) {
+                        case KeyEvent.VK_ENTER:
+                            state = game.currentSong();
+                            break;
+                    }
                 }
             }
 
@@ -131,9 +143,7 @@ public class GameView extends JFrame {
         protected void paintComponent(Graphics g /*paintbrush*/) {
             super.paintComponent(g);
             g.drawImage(images.get(state), 0, 0, getWidth(), getHeight(),this);
-            if(g != null) {
-                screen.render(g); // ask the world to paint itself and paint the sprites on the canvas
-            }
+            screen.render(g); // ask the world to paint itself and paint the sprites on the canvas
         }
     }
 }

@@ -56,9 +56,9 @@ public class Track extends Sprite {
         
         int buttonY = 725;
         int distance = Math.abs(note.getY() - buttonY);
-        if (distance < 20)  return "PERFECT";
-        if (distance < 50)  return "GOOD";
-        if (distance < 100) return "MISS";
+        if (distance < 40)  return "PERFECT";
+        if (distance < 80)  return "GOOD";
+        if (distance < 120) return "MISS";
 
         // if the note is too far away, the click is not considered a miss
         return "NULL";

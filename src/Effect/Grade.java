@@ -2,7 +2,6 @@ package Effect;
 
 import java.awt.*;
 
-import controller.Game;
 import model.*;
 import views.GameView;
 import javax.imageio.ImageIO;

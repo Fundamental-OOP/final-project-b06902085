@@ -21,7 +21,7 @@ public class Note extends Sprite    {
     private final Point location;
     private final SpriteShape shape;
     private final NoteDatabase db;
-    private final int trackID;
+    public final int trackID;
     private static Image image = null;
     private static int dropDistance = 1;
     
@@ -50,7 +50,6 @@ public class Note extends Sprite    {
         dropDistance = d;
     }
 
-
     @Override
     public void render(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
@@ -65,7 +64,8 @@ public class Note extends Sprite    {
         }
        
         else  {
-            db.removeNote(trackID);
+            this.db.missdrop(this);
+            this.db.removeNote(this.trackID);
         }
         
     }

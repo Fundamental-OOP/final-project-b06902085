@@ -144,4 +144,9 @@ public class NoteDatabase extends Thread {
         }
     }
 
+    public void missdrop(Note note) {
+        /*It is guranteed that the note jump out the boundary*/
+        game.clickTrack(note.trackID);
+    }
+
 }

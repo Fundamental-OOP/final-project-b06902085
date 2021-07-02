@@ -110,11 +110,13 @@ public class GameView extends JFrame {
                             break;
                         case KeyEvent.VK_R:
                             game.stopGame();
+                            game.clearScore();
                             game.play(game.currentSong(true));    
                             state = "GAME";
                             break;
                         case KeyEvent.VK_B:
                             game.stopGame();
+                            game.clearScore();
                             state = game.currentSong(false);
                             break;
                     }

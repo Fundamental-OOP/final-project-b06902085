@@ -5,15 +5,14 @@ import model.Sprite;
 import track.*;
 import note.*;
 import pause.Pause;
-import rank.Rank;
 import views.GameView;
 import menu.Intro;
 import media.AudioPlayer;
 import Effect.Grade;
+import rank.Rank;
 
 import javax.sound.sampled.LineUnavailableException;
 
-import Effect.Grade;
 import calculateResult.ScoreSprite;
 
 import java.util.logging.Level;
@@ -86,15 +85,18 @@ public class Game extends GameLoop {
                 numMiss++;
             }
             if (!hitStatus.equals("MISS"))    {
-                int maxCombo = db.getMaxCombo();
-                cummulativeScore += 100000 / (maxCombo*(maxCombo - 1) / 2) * currentCombo;
-                cummulativeScore += 900000 / maxCombo * (hitStatus.equals("PERFECT")? 1 : 0.5);
+                int N = db.getMaxCombo();
+                cummulativeScore += 100000 / (N*(N - 1) / 2) * currentCombo;
+                cummulativeScore += 900000 / N * (hitStatus.equals("PERFECT")? 1 : 0.5);
                 currentCombo++;
+                if (currentCombo > maxCombo)    {
+                    maxCombo = currentCombo;
+                }
             }
             else    {
                 currentCombo = 0;
             }
-            // System.out.printf("combo = %d, score = %d\n", currentCombo, cummulativeScore);
+            // System.out.printf("combo = %d, max = %d\n", currentCombo, maxCombo);
             this.screen.removeSprite(this.comboSprite);
             this.comboSprite = new NumberSprite(new Point(GameView.WIDTH / 2 - 30, GameView.HEIGHT / 2 - 100), currentCombo);
             this.screen.addSprite(this.comboSprite);
@@ -179,13 +181,13 @@ public class Game extends GameLoop {
         if (cummulativeScore >= 900000)    {
             finalRank = "S";
         }
-        else if (cummulativeScore > 800000) {
+        else if (cummulativeScore >= 800000) {
             finalRank = "A";
         }
-        else if (cummulativeScore > 700000) {
+        else if (cummulativeScore >= 700000) {
             finalRank = "B";
         }
-        else if (cummulativeScore > 600000) {
+        else if (cummulativeScore >= 600000) {
             finalRank = "C";
         }
         else    {
@@ -294,12 +296,11 @@ public class Game extends GameLoop {
         screen.addSprite(missSp);
 
         ScoreSprite comboSp = new ScoreSprite(new Point(300, 405), maxCombo);
+        //System.out.println(maxCombo);
         screen.addSprite(comboSp);
         
-        // ScoreSprite gradeSp = new ScoreSprite(new Point(300, 600), finalRank);
-        // screen.addSprite(gradeSp);
-
-        Rank gradeSp = new Rank(finalRank);
+        ScoreSprite gradeSp = new ScoreSprite(new Point(300, 600), finalRank);
+        //Rank gradeSp = new Rank(finalRank);
         screen.addSprite(gradeSp);
     }
 

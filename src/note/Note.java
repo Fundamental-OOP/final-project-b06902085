@@ -21,8 +21,9 @@ public class Note extends Sprite    {
     private final Point location;
     private final SpriteShape shape;
     private final NoteDatabase db;
-    private final int trackID;
+    public final int trackID;
     private static Image image = null;
+    private static int dropDistance = 1;
     
     public Note(Point location, NoteDatabase db,int trackID) {
         this.location = location;
@@ -37,6 +38,18 @@ public class Note extends Sprite    {
         }
     }
 
+    public void NoteSuspend() {
+        setdropDistance(0);
+    }
+
+    public void NoteResume() {
+        setdropDistance(1);
+    }
+
+    private void setdropDistance(int d) {
+        dropDistance = d;
+    }
+
     @Override
     public void render(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
@@ -47,11 +60,12 @@ public class Note extends Sprite    {
     @Override
     public void update() {
         if (this.location.getY() <= GameView.HEIGHT - 100) {
-            this.location.setLocation(this.location.getX(), this.location.getY() + 1);
+            this.location.setLocation(this.location.getX(), this.location.getY() + dropDistance);
         }
        
         else  {
-            db.removeNote(trackID);
+            this.db.missdrop();
+            this.db.removeNote(this.trackID);
         }
         
     }

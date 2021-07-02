@@ -7,6 +7,7 @@ import controller.Game;
 import java.awt.*;
 import java.util.List;
 import java.util.ArrayList;
+import static controller.Game.threadSuspended;
 
 public class NoteDatabase extends Thread {
     
@@ -21,11 +22,25 @@ public class NoteDatabase extends Thread {
     private final List<List<Integer>> NoteIDList;
     private final List<List<Note>> NoteList;
     private final Game game;
+    
 
     private int bpn = 0;
 
     public void run() {
+
+        boolean key = false;
+
         for(int i = 0;i < LineSize;i++){
+
+            while (threadSuspended) {
+                try{
+                    Thread.sleep(1);
+                } catch(InterruptedException e) {
+                    //System.out.println("Thread Execution stopped unexpectedly");
+                    return;
+                }
+            }
+            
             if(NoteIDList.get(0).get(i) == 1){
                 Note newNote = new Note(new Point(startpos + borderWidth, 0),this,0);
                 NoteList.get(0).add(newNote);
@@ -56,7 +71,20 @@ public class NoteDatabase extends Thread {
                 //System.out.println("Thread Execution stopped unexpectedly");
                 return;
             }
-
+        }
+        while(!key) { 
+            key = true;
+            for(int i = 0;i < trackSize;i++){
+                if(!NoteList.get(i).isEmpty()) {
+                    key = false;
+                    try{
+                        Thread.sleep(100);
+                    } catch(InterruptedException e) {
+                        return;
+                    }
+                    break;
+                }
+            }
         }
         game.finishGame();
     }
@@ -94,4 +122,31 @@ public class NoteDatabase extends Thread {
             NoteList.get(T_NUM).remove(0);
         }
     }
+
+    public void suspendNote() {
+        
+        for(int i = 0;i < trackSize;i++){
+            if(!NoteList.get(i).isEmpty()) {
+                for(Note n : NoteList.get(i)) {
+                    n.NoteSuspend();
+                }
+            }
+        }
+    }
+
+    public void resumeNote() {
+        for(int i = 0;i < trackSize;i++){
+            if(!NoteList.get(i).isEmpty()) {
+                for(Note n : NoteList.get(i)) {
+                    n.NoteResume();
+                }
+            }
+        }
+    }
+
+    public void missdrop() {
+        game.setCombo(0);
+        game.setGrade("MISS");
+    }
+
 }

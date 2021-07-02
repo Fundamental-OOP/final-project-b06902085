@@ -1,12 +1,20 @@
 package controller;
 
 import model.Screen;
+import model.Sprite;
 import track.*;
 import note.*;
+import pause.Pause;
 import views.GameView;
 import menu.Intro;
 import media.AudioPlayer;
+import Effect.Grade;
+import rank.Rank;
+
 import javax.sound.sampled.LineUnavailableException;
+
+import calculateResult.ScoreSprite;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,6 +24,7 @@ import static FileHandler.FileHandler.addFileByFilePath;
 import java.awt.*;
 import java.io.File;
 import java.util.Arrays;
+import java.util.List;
 
 
 public class Game extends GameLoop {
@@ -26,16 +35,22 @@ public class Game extends GameLoop {
     private ArrayList<TrackButton> trackButtons = new ArrayList<TrackButton>();
     private ArrayList<Track> tracks = new ArrayList<Track>();
     private ArrayList<Border> borders = new ArrayList<Border>();
+    private List<Sprite> currentSprites = new ArrayList<Sprite>();
     private NoteDatabase db = null;
     private static int songIndex;
     private AudioPlayer musicPlayer;
-    public static int cummulativeScore = 0;
-    public static int currentCombo = 0;
+    private static int cummulativeScore = 0;
+    private static int currentCombo = 0;
+    private static String finalRank;
+    private NumberSprite comboSprite;
+    private Pause pausePage;
+    public static boolean threadSuspended = false;
+    private Grade grader;
     
-    private String curState;
-    private ComboEffect combo;
-
-    
+    private static int numPerfect = 0;
+    private static int numGreat = 0;
+    private static int numMiss = 0;
+    private static int maxCombo = 0;
 
     int borderWidth = 10;
     int startpos = (GameView.WIDTH - 144 * 4 - 5 * borderWidth) / 2;
@@ -44,6 +59,7 @@ public class Game extends GameLoop {
         this.screen = screen;
         this.intro = new Intro();
         screen.addSprite(this.intro);
+        
 
         this.songNames = new ArrayList<String>();
         try {
@@ -59,36 +75,39 @@ public class Game extends GameLoop {
         Track track = getTrack(T_NUM);
         track.click();
         String hitStatus = track.checkHit(db.getNote(T_NUM));
-        curState = hitStatus;
-        System.out.println(hitStatus);
-        HitEffect hits = new HitEffect("OTHER");
+        grader.setGradeStatus(hitStatus);
         if(!hitStatus.equals("NULL")){
-            if (!hitStatus.equals("MISS")) {
-
-                int maxCombo = db.getMaxCombo();
-                cummulativeScore += 100000 / (maxCombo*(maxCombo - 1) / 2) * currentCombo;
-                cummulativeScore += 900000 / maxCombo * (hitStatus.equals("PERFECT")? 1 : 0.5);
-                currentCombo++;
+            if (hitStatus.equals("PERFECT")) {
+                numPerfect++;
+            } else if (hitStatus.equals("GOOD")) {
+                numGreat++;
+            } else {
+                numMiss++;
             }
-            else {
+            if (!hitStatus.equals("MISS"))    {
+                int N = db.getMaxCombo();
+                cummulativeScore += 100000 / (N*(N - 1) / 2) * currentCombo;
+                cummulativeScore += 900000 / N * (hitStatus.equals("PERFECT")? 1 : 0.5);
+                currentCombo++;
+                if (currentCombo > maxCombo)    {
+                    maxCombo = currentCombo;
+                }
+            }
+            else    {
                 currentCombo = 0;
             }
-            hits = new HitEffect(hitStatus);
-            screen.addSprite(hits);
-            System.out.printf("combo = %d, score = %d\n", currentCombo, cummulativeScore);
+            // System.out.printf("combo = %d, max = %d\n", currentCombo, maxCombo);
+            this.screen.removeSprite(this.comboSprite);
+            this.comboSprite = new NumberSprite(new Point(GameView.WIDTH / 2 - 30, GameView.HEIGHT / 2 - 100), currentCombo);
+            this.screen.addSprite(this.comboSprite);
             db.removeNote(T_NUM);
-            screen.removeSprite(hits);
         }
     }
 
     public void play(Object name){
+        this.db = new NoteDatabase(this,screen,startpos,borderWidth);
         addFileByFilePath(NoteDatabase.SHEET1, new File("assets/song/reflect/sheet.out"));
-
-
-        this.combo = new ComboEffect();
-        screen.addSprite(combo);
-
-
+        addFileByFilePath(NoteDatabase.SHEET2, new File("assets/song/country_road/example.out"));
         for(int i = 0;i < 4;i++) {
             tracks.add(new track.Track(0, new Point(startpos + 154 * i + borderWidth, 0)));
             screen.addSprite(tracks.get(i));
@@ -103,8 +122,9 @@ public class Game extends GameLoop {
             trackButtons.add(new TrackButton(new Point(startpos + 154 * i + borderWidth, 725), buttonNames.get(i), 145, 145));
             screen.addSprite(trackButtons.get(i));
         }
-
         db.play(name);  
+        this.grader = new Grade(new Point(0,0));
+        screen.addSprite(grader);
     }
 
     public void releaseTrack(int T_NUM) {
@@ -158,9 +178,21 @@ public class Game extends GameLoop {
     }
 
     public void result() {
-       //Failed to implement
-    }
-    public String previousSong()  {
+        if (cummulativeScore >= 900000)    {
+            finalRank = "S";
+        }
+        else if (cummulativeScore >= 800000) {
+            finalRank = "A";
+        }
+        else if (cummulativeScore >= 700000) {
+            finalRank = "B";
+        }
+        else if (cummulativeScore >= 600000) {
+            finalRank = "C";
+        }
+        else    {
+            finalRank = "F";
+        }
         AudioPlayer soundEffectPlayer = null;
         try {
             soundEffectPlayer = new AudioPlayer();
@@ -168,7 +200,11 @@ public class Game extends GameLoop {
         catch (LineUnavailableException ex) {
             Logger.getLogger(AudioPlayer.class.getName()).log(Level.SEVERE, null, ex);
         }
-        soundEffectPlayer.playSounds("A", false);
+        soundEffectPlayer.playSounds("ENDING", false);
+    }
+
+    public String previousSong()  {
+        clickSoundEffect();
         songIndex--;
         songIndex = (songIndex + songNames.size()) % songNames.size();
         String songName = songNames.get(songIndex);
@@ -185,11 +221,15 @@ public class Game extends GameLoop {
         return songName;
     }
 
-    public String currentSong() {
+    public String currentSong(boolean newGame) {
         clickSoundEffect();
         String songName = songNames.get(songIndex);
         this.musicPlayer.stopSounds();
         this.musicPlayer.playSounds(songName, false);
+        if (newGame){
+            this.comboSprite = new NumberSprite(new Point(GameView.WIDTH / 2 - 30, GameView.HEIGHT / 2 - 100), currentCombo);
+            screen.addSprite(this.comboSprite);
+        }
         return songName;
     }
     public void clickSoundEffect()  {
@@ -205,11 +245,92 @@ public class Game extends GameLoop {
 
     public void finishGame() {
         GameView.state = "ENDING";
-        screen.removeSprites();
+        stopGame();
+        result();
+        showResult();
+        clearScore();
+    }
+
+    public void clearScore() {
+        numGreat = 0;
+        numMiss = 0;
+        numPerfect = 0;
+        numMiss = 0;
+        cummulativeScore = 0;
+        currentCombo = 0;
+        maxCombo = 0;
+    }
+    
+    public String pauseGame() {
+        threadSuspended = !threadSuspended;
+        if(!threadSuspended) {
+            screen.addSprites(currentSprites.toArray(Sprite[]::new));
+            screen.removeSprite(pausePage);
+            db.resumeNote();
+            this.musicPlayer.resumeSound();
+            return "GAME";
+        } else {
+            currentSprites = new ArrayList<>(screen.getSprites());
+            screen.removeSprites();
+            pausePage = new Pause(new Point(0, 0));
+            screen.addSprite(pausePage);
+            db.suspendNote();
+            this.musicPlayer.pauseSound();
+            return "PAUSE";
+        }
+
+    }
+
+
+    public void showResult() {
+        ScoreSprite scoreSp = new ScoreSprite(new Point(250, 756), cummulativeScore);
+        screen.addSprite(scoreSp);
+
+        ScoreSprite perfectSp = new ScoreSprite(new Point(350, 190), numPerfect);
+        screen.addSprite(perfectSp);
+
+        ScoreSprite goodSp = new ScoreSprite(new Point(280, 265), numGreat);
+        screen.addSprite(goodSp);
+
+        ScoreSprite missSp = new ScoreSprite(new Point(220, 330), numMiss);
+        screen.addSprite(missSp);
+
+        ScoreSprite comboSp = new ScoreSprite(new Point(300, 405), maxCombo);
+        //System.out.println(maxCombo);
+        screen.addSprite(comboSp);
+        
+        ScoreSprite gradeSp = new ScoreSprite(new Point(300, 600), finalRank);
+        //Rank gradeSp = new Rank(finalRank);
+        screen.addSprite(gradeSp);
+    }
+
+    public void stopGame() {
+        threadSuspended = false;
+        if(!currentSprites.isEmpty()) {
+            currentSprites.clear();
+        }
+        clearScreen();
+        screen.removeSprite(this.comboSprite);
+
         if(db != null) {
+            db.resumeNote();
             db.interrupt();
         }
         this.musicPlayer.stopSounds();
     }
 
+    public void clearScreen(){
+        screen.removeSprites();
+    }
+
+    public void setCombo(int combo) {
+        currentCombo = combo;
+        this.screen.removeSprite(this.comboSprite);
+        this.comboSprite = new NumberSprite(new Point(GameView.WIDTH / 2 - 30, GameView.HEIGHT / 2 - 100), currentCombo);
+        this.screen.addSprite(this.comboSprite);
+    }
+
+    public void setGrade(String status) {
+        grader.setGradeStatus(status);
+    }
 }

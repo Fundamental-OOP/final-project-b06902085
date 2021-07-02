@@ -274,6 +274,7 @@ public class Game extends GameLoop {
     }
 
     public void setCombo(int combo) {
+        currentCombo = combo;
         this.screen.removeSprite(this.comboSprite);
         this.comboSprite = new NumberSprite(new Point(GameView.WIDTH / 2 - 30, GameView.HEIGHT / 2 - 100), currentCombo);
         this.screen.addSprite(this.comboSprite);

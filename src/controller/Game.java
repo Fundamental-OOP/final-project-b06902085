@@ -81,7 +81,7 @@ public class Game extends GameLoop {
             else    {
                 currentCombo = 0;
             }
-            System.out.printf("combo = %d, score = %d\n", currentCombo, cummulativeScore);
+            // System.out.printf("combo = %d, score = %d\n", currentCombo, cummulativeScore);
             this.screen.removeSprite(this.comboSprite);
             this.comboSprite = new NumberSprite(new Point(GameView.WIDTH / 2 - 30, GameView.HEIGHT / 2 - 100), currentCombo);
             this.screen.addSprite(this.comboSprite);
@@ -271,5 +271,15 @@ public class Game extends GameLoop {
 
     public void clearScreen(){
         screen.removeSprites();
+    }
+
+    public void setCombo(int combo) {
+        this.screen.removeSprite(this.comboSprite);
+        this.comboSprite = new NumberSprite(new Point(GameView.WIDTH / 2 - 30, GameView.HEIGHT / 2 - 100), currentCombo);
+        this.screen.addSprite(this.comboSprite);
+    }
+
+    public void setGrade(String status) {
+        grader.setGradeStatus(status);
     }
 }

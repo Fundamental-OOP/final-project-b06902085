@@ -64,7 +64,7 @@ public class Note extends Sprite    {
         }
        
         else  {
-            this.db.missdrop(this);
+            this.db.missdrop();
             this.db.removeNote(this.trackID);
         }
         

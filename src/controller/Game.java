@@ -5,6 +5,7 @@ import model.Sprite;
 import track.*;
 import note.*;
 import pause.Pause;
+import rank.Rank;
 import views.GameView;
 import menu.Intro;
 import media.AudioPlayer;
@@ -79,7 +80,7 @@ public class Game extends GameLoop {
         if(!hitStatus.equals("NULL")){
             if (hitStatus.equals("PERFECT")) {
                 numPerfect++;
-            } else if (hitStatus.equals("GREAT")) {
+            } else if (hitStatus.equals("GOOD")) {
                 numGreat++;
             } else {
                 numMiss++;
@@ -295,7 +296,10 @@ public class Game extends GameLoop {
         ScoreSprite comboSp = new ScoreSprite(new Point(300, 405), maxCombo);
         screen.addSprite(comboSp);
         
-        ScoreSprite gradeSp = new ScoreSprite(new Point(300, 600), finalRank);
+        // ScoreSprite gradeSp = new ScoreSprite(new Point(300, 600), finalRank);
+        // screen.addSprite(gradeSp);
+
+        Rank gradeSp = new Rank(finalRank);
         screen.addSprite(gradeSp);
     }
 

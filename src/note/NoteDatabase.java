@@ -144,7 +144,7 @@ public class NoteDatabase extends Thread {
         }
     }
 
-    public void missdrop(Note note) {
+    public void missdrop() {
         game.setCombo(0);
         game.setGrade("MISS");
     }

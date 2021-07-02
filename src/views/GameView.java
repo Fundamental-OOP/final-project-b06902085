@@ -96,6 +96,7 @@ public class GameView extends JFrame {
                             break;
                         case KeyEvent.VK_Q:
                             game.stopGame();
+                            game.clearScore();
                             state = game.currentSong(false);
                             break;
                         case KeyEvent.VK_P:
@@ -120,6 +121,7 @@ public class GameView extends JFrame {
                 }else if(state.equals("ENDING")) {
                     switch(keyEvent.getKeyCode()) {
                         case KeyEvent.VK_ENTER:
+                            game.clearScreen();
                             state = game.currentSong(false);
                             break;
                     }

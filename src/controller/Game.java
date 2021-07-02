@@ -13,6 +13,7 @@ import Effect.Grade;
 import javax.sound.sampled.LineUnavailableException;
 
 import Effect.Grade;
+import calculateResult.ScoreSprite;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -46,6 +47,10 @@ public class Game extends GameLoop {
     public static boolean threadSuspended = false;
     private Grade grader;
     
+    private static int numPerfect = 0;
+    private static int numGreat = 0;
+    private static int numMiss = 0;
+    private static int maxCombo = 0;
 
     int borderWidth = 10;
     int startpos = (GameView.WIDTH - 144 * 4 - 5 * borderWidth) / 2;
@@ -72,6 +77,13 @@ public class Game extends GameLoop {
         String hitStatus = track.checkHit(db.getNote(T_NUM));
         grader.setGradeStatus(hitStatus);
         if(!hitStatus.equals("NULL")){
+            if (hitStatus.equals("PERFECT")) {
+                numPerfect++;
+            } else if (hitStatus.equals("GREAT")) {
+                numGreat++;
+            } else {
+                numMiss++;
+            }
             if (!hitStatus.equals("MISS"))    {
                 int maxCombo = db.getMaxCombo();
                 cummulativeScore += 100000 / (maxCombo*(maxCombo - 1) / 2) * currentCombo;
@@ -232,8 +244,20 @@ public class Game extends GameLoop {
         GameView.state = "ENDING";
         stopGame();
         result();
+        showResult();
+        clearScore();
     }
 
+    public void clearScore() {
+        numGreat = 0;
+        numMiss = 0;
+        numPerfect = 0;
+        numMiss = 0;
+        cummulativeScore = 0;
+        currentCombo = 0;
+        maxCombo = 0;
+    }
+    
     public String pauseGame() {
         threadSuspended = !threadSuspended;
         if(!threadSuspended) {
@@ -252,6 +276,27 @@ public class Game extends GameLoop {
             return "PAUSE";
         }
 
+    }
+
+
+    public void showResult() {
+        ScoreSprite scoreSp = new ScoreSprite(new Point(250, 756), cummulativeScore);
+        screen.addSprite(scoreSp);
+
+        ScoreSprite perfectSp = new ScoreSprite(new Point(350, 190), numPerfect);
+        screen.addSprite(perfectSp);
+
+        ScoreSprite goodSp = new ScoreSprite(new Point(280, 265), numGreat);
+        screen.addSprite(goodSp);
+
+        ScoreSprite missSp = new ScoreSprite(new Point(220, 330), numMiss);
+        screen.addSprite(missSp);
+
+        ScoreSprite comboSp = new ScoreSprite(new Point(300, 405), maxCombo);
+        screen.addSprite(comboSp);
+        
+        ScoreSprite gradeSp = new ScoreSprite(new Point(300, 600), finalRank);
+        screen.addSprite(gradeSp);
     }
 
     public void stopGame() {
